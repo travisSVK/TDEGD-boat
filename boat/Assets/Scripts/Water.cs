@@ -14,7 +14,19 @@ public class Water : MonoBehaviour
     private float m_WaveCurrent = 0.5f;
 
     [SerializeField]
+    private float m_WaveFrequency = 0.2f;
+
+    [SerializeField]
+    private float m_NoiseFrequency = 0.2f;
+
+    [SerializeField]
+    private float m_NoiseStrength = 0.3f;
+
+    [SerializeField]
     private int m_Length = 100;
+
+    [SerializeField]
+    private int m_Width = 10;
 
     private Mesh m_Mesh = null;
 
@@ -23,8 +35,6 @@ public class Water : MonoBehaviour
     private List<Vector3> m_Vertices = new List<Vector3>();
 
     private List<int> m_Indices = new List<int>();
-
-    private float elapsedTime = 0.0f;
 
     private void AddQuad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
     {
@@ -55,20 +65,21 @@ public class Water : MonoBehaviour
 
         for (int x = 0; x < m_Length; ++x)
         {
-            Debug.Log(m_VertexDensity);
+            for (int z = 0; z < m_Width; ++z)
+            {
+                AddQuad(
+                    new Vector3(x * m_VertexDensity, 0.0f, z * m_VertexDensity),
+                    new Vector3(x * m_VertexDensity, 0.0f, (z + 1.0f) * m_VertexDensity),
+                    new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, (z + 1.0f) * m_VertexDensity),
+                    new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, z * m_VertexDensity)
+                );
+            }
 
             AddQuad(
-                new Vector3(x * m_VertexDensity, 0.0f, -2.0f),
-                new Vector3(x * m_VertexDensity, 0.0f, 2.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, 2.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, -2.0f)
-            );
-
-            AddQuad(
-                new Vector3(x * m_VertexDensity, -10.0f, -2.0f),
-                new Vector3(x * m_VertexDensity, 0.0f, -2.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, -2.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, -10.0f, -2.0f)
+                new Vector3(x * m_VertexDensity, -10.0f, 0.0f),
+                new Vector3(x * m_VertexDensity, 0.0f, 0.0f),
+                new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, 0.0f),
+                new Vector3((x + 1.0f) * m_VertexDensity, -10.0f, 0.0f)
             );
         }
 
@@ -85,13 +96,16 @@ public class Water : MonoBehaviour
     private void Update()
     {
         Vector3[] transformedVertices = new Vector3[m_Vertices.Count];
-        elapsedTime += Time.deltaTime * m_WaveCurrent;
+
+        float elapsedTime = Time.realtimeSinceStartup * m_WaveCurrent;
 
         for (int i = 0; i < m_Vertices.Count; ++i)
         {
             if (m_Vertices[i].y > -0.1f)
             {
-                float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x);
+                float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_WaveFrequency);
+                yValue += Mathf.PerlinNoise((m_Vertices[i].x + elapsedTime) * m_NoiseFrequency, m_Vertices[i].z) * m_NoiseStrength;
+
                 transformedVertices[i] = new Vector3(m_Vertices[i].x, yValue * m_WaveAmplitude, m_Vertices[i].z);
             }
             else
