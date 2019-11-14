@@ -17,11 +17,14 @@ public class Water : MonoBehaviour
     }
 
     [SerializeField]
-    private  int m_Length = 100;
+    private int m_Length = 100;
     
     [SerializeField]
     private int m_Width = 10;
-    
+
+    [SerializeField]
+    private int m_HorizontalChunks = 10;
+
     [SerializeField]
     private float m_VertexDensity;
 
@@ -83,6 +86,8 @@ public class Water : MonoBehaviour
         MeshFilter meshFilter = GetComponent(typeof(MeshFilter)) as MeshFilter;
         m_MeshCollider = GetComponent(typeof(MeshCollider)) as MeshCollider;
 
+
+
         for (int x = 0; x < m_Length; ++x)
         {
             for (int z = 0; z < m_Width; ++z)
@@ -118,15 +123,15 @@ public class Water : MonoBehaviour
 
         for (int i = 0; i < m_Vertices.Count; ++i)
         {
-            if (m_Vertices[i].y > -0.1f)
+            if (m_Vertices[i].y > -5.0f)
             {
                 m_TranslatedVertices[i] = m_Vertices[i];
                 for (int j = 0; j < m_Waves.Count; ++j)
                 {
                     float elapsedTime = Time.realtimeSinceStartup * m_Waves[j].waveVelocity;
-                    float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_Waves[j].waveFrequency);
+                    float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_Waves[j].waveFrequency) * m_Waves[j].waveAmplitude;
                     yValue += Mathf.PerlinNoise((m_Vertices[i].x + elapsedTime) * m_Waves[j].noiseFrequency, m_Vertices[i].z * m_Waves[j].noiseFrequency) * m_Waves[j].noiseStrength;
-                    m_TranslatedVertices[i] += new Vector3(m_Vertices[i].x, yValue * m_Waves[j].waveAmplitude, m_Vertices[i].z) * m_Waves[j].influence;
+                    m_TranslatedVertices[i] += new Vector3(0.0f, yValue * m_Waves[j].influence, 0.0f);
                 }
             }
             else
