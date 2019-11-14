@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44658017, g: 0.49641502, b: 0.57482153, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -274,14 +274,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05553095e40670444ada95ae1a1ef945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_VertexDensity: 1
-  m_WaveAmplitude: 1
-  m_WaveCurrent: 0.5
-  m_WaveFrequency: 0.2
-  m_NoiseFrequency: 0.2
-  m_NoiseStrength: 0.3
-  m_Length: 200
+  m_Length: 100
   m_Width: 10
+  m_VertexDensity: 1
+  m_Waves:
+  - waveAmplitude: 1
+    waveVelocity: 0.5
+    waveFrequency: 0.5
+    noiseFrequency: 0.3
+    noiseStrength: 0.6
+    influence: 1
+  - waveAmplitude: 4
+    waveVelocity: 0.3
+    waveFrequency: 0.3
+    noiseFrequency: 0.2
+    noiseStrength: 1
+    influence: 0.7
+  - waveAmplitude: 6
+    waveVelocity: 1
+    waveFrequency: 0.7
+    noiseFrequency: 3
+    noiseStrength: 0.2
+    influence: 0.2
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +464,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39.77, y: 3.85, z: -19.63}
+  m_LocalPosition: {x: 39.77, y: 4.99, z: -19.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

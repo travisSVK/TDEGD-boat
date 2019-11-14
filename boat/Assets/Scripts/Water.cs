@@ -1,38 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Water : MonoBehaviour
 {
-    [SerializeField]
-    private float m_VertexDensity = 0.1f;
+    [Serializable]
+    public struct WaveProperties
+    {
+        public float waveAmplitude;
+        public float waveVelocity;
+        public float waveFrequency;
+        public float noiseFrequency;
+        public float noiseStrength;
+        public float influence;
+    }
 
     [SerializeField]
-    private float m_WaveAmplitude = 1.0f;
-
-    [SerializeField]
-    private float m_WaveCurrent = 0.5f;
-
-    [SerializeField]
-    private float m_WaveFrequency = 0.2f;
-
-    [SerializeField]
-    private float m_NoiseFrequency = 0.2f;
-
-    [SerializeField]
-    private float m_NoiseStrength = 0.3f;
-
-    [SerializeField]
-    private int m_Length = 100;
-
+    private  int m_Length = 100;
+    
     [SerializeField]
     private int m_Width = 10;
+    
+    [SerializeField]
+    private float m_VertexDensity;
+
+    [SerializeField]
+    private List<WaveProperties> m_Waves = new List<WaveProperties>();
 
     private Mesh m_Mesh = null;
 
     private MeshCollider m_MeshCollider = null;
 
     private List<Vector3> m_Vertices = new List<Vector3>();
+
+    private List<Color> m_Color = new List<Color>();
+
+    private List<Vector3> m_TranslatedVertices = new List<Vector3>();
 
     private List<int> m_Indices = new List<int>();
 
@@ -47,6 +51,22 @@ public class Water : MonoBehaviour
         m_Vertices.Add(p1);
         m_Vertices.Add(p2);
         m_Vertices.Add(p3);
+
+        m_TranslatedVertices.Add(p0);
+        m_TranslatedVertices.Add(p1);
+        m_TranslatedVertices.Add(p3);
+
+        m_TranslatedVertices.Add(p1);
+        m_TranslatedVertices.Add(p2);
+        m_TranslatedVertices.Add(p3);
+
+        m_Color.Add(Color.blue);
+        m_Color.Add(Color.blue);
+        m_Color.Add(Color.blue);
+
+        m_Color.Add(Color.blue);
+        m_Color.Add(Color.blue);
+        m_Color.Add(Color.blue);
 
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
@@ -95,27 +115,28 @@ public class Water : MonoBehaviour
 
     private void Update()
     {
-        Vector3[] transformedVertices = new Vector3[m_Vertices.Count];
-
-        float elapsedTime = Time.realtimeSinceStartup * m_WaveCurrent;
 
         for (int i = 0; i < m_Vertices.Count; ++i)
         {
             if (m_Vertices[i].y > -0.1f)
             {
-                float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_WaveFrequency);
-                yValue += Mathf.PerlinNoise((m_Vertices[i].x + elapsedTime) * m_NoiseFrequency, m_Vertices[i].z) * m_NoiseStrength;
-
-                transformedVertices[i] = new Vector3(m_Vertices[i].x, yValue * m_WaveAmplitude, m_Vertices[i].z);
+                m_TranslatedVertices[i] = m_Vertices[i];
+                for (int j = 0; j < m_Waves.Count; ++j)
+                {
+                    float elapsedTime = Time.realtimeSinceStartup * m_Waves[j].waveVelocity;
+                    float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_Waves[j].waveFrequency);
+                    yValue += Mathf.PerlinNoise((m_Vertices[i].x + elapsedTime) * m_Waves[j].noiseFrequency, m_Vertices[i].z * m_Waves[j].noiseFrequency) * m_Waves[j].noiseStrength;
+                    m_TranslatedVertices[i] += new Vector3(m_Vertices[i].x, yValue * m_Waves[j].waveAmplitude, m_Vertices[i].z) * m_Waves[j].influence;
+                }
             }
             else
             {
-                transformedVertices[i] = m_Vertices[i];
+                m_TranslatedVertices[i] = m_Vertices[i];
             }
         }
 
-        m_Mesh.vertices = transformedVertices;
-        m_Mesh.triangles = m_Indices.ToArray();
+        m_Mesh.vertices = m_TranslatedVertices.ToArray();
+        m_Mesh.colors = m_Color.ToArray();
         m_Mesh.RecalculateNormals();
         m_Mesh.RecalculateTangents();
         m_Mesh.RecalculateBounds();
