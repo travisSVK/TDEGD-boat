@@ -25,13 +25,19 @@ public class WaterChunk : MonoBehaviour
         waterEdgeObject.transform.parent = transform;
         waterEdgeObject.transform.position = transform.position;
         m_WaterEdgeMesh = waterEdgeObject.AddComponent(typeof(WaterEdgeMesh)) as WaterEdgeMesh;
-        m_WaterEdgeMesh.Initialize(m_Water);
+        if (!m_WaterEdgeMesh.Initialize(m_Water))
+        {
+            return false;
+        }
 
         GameObject waterSurfaceObject = new GameObject("WaterSurface");
         waterSurfaceObject.transform.parent = transform;
         waterSurfaceObject.transform.position = transform.position;
         m_WaterSurfaceMesh = waterSurfaceObject.AddComponent(typeof(WaterSurfaceMesh)) as WaterSurfaceMesh;
-        m_WaterSurfaceMesh.Initialize(m_Water);
+        if (!m_WaterSurfaceMesh.Initialize(m_Water))
+        {
+            return false;
+        }
 
         m_isInitialized = true;
         return true;

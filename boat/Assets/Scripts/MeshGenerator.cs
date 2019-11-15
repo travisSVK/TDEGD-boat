@@ -12,8 +12,6 @@ public class MeshGenerator : MonoBehaviour
 
     private List<Vector3> m_Vertices = new List<Vector3>();
 
-    private List<Color> m_Color = new List<Color>();
-
     private List<int> m_Indices = new List<int>();
 
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
@@ -23,10 +21,6 @@ public class MeshGenerator : MonoBehaviour
         m_Vertices.Add(p0);
         m_Vertices.Add(p1);
         m_Vertices.Add(p2);
-
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
 
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
@@ -45,14 +39,6 @@ public class MeshGenerator : MonoBehaviour
         m_Vertices.Add(p2);
         m_Vertices.Add(p3);
 
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
         m_Indices.Add(current + 2);
@@ -65,13 +51,27 @@ public class MeshGenerator : MonoBehaviour
     public void Clear()
     {
         m_Vertices.Clear();
-        m_Color.Clear();
         m_Indices.Clear();
+    }
+
+    public int Count()
+    {
+        return m_Vertices.Count;
+    }
+
+    public Vector3 GetVertex(int index)
+    {
+        return m_Vertices[index];
     }
 
     public void Refresh()
     {
         enabled = true;
+    }
+
+    public void SetVertex(int index, Vector3 value)
+    {
+        m_Vertices[index] = value;
     }
 
     private void Start()

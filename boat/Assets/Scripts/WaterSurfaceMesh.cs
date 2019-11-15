@@ -28,4 +28,21 @@ public class WaterSurfaceMesh : MonoBehaviour
         m_isInitialized = true;
         return true;
     }
+
+    private void Update()
+    {
+        if (!m_isInitialized)
+        {
+            enabled = false;
+            Debug.LogError("Trying to update an non-initialized WaterEdgeMesh.");
+            return;
+        }
+
+        UpdateMesh();
+    }
+
+    private void UpdateMesh()
+    {
+
+    }
 }

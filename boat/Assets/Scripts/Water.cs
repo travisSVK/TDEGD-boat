@@ -17,29 +17,45 @@ public class Water : MonoBehaviour
     }
 
     [SerializeField]
-    private int m_Length = 100;
+    private int m_ChunkLength = 20;
 
     [SerializeField]
     private int m_Width = 10;
 
     [SerializeField]
-    private int m_HorizontalChunks = 10;
+    private int m_ChunkCount = 10;
 
     [SerializeField]
-    private float m_VertexDensity;
+    private int m_VertexDensity;
 
     [SerializeField]
     private List<WaveProperties> m_Waves = new List<WaveProperties>();
 
     private Mesh m_Mesh = null;
 
-    private MeshCollider m_MeshCollider = null;
-
     private List<Vector3> m_Vertices = new List<Vector3>();
 
     private List<int> m_Indices = new List<int>();
 
+    private List<WaterChunk> m_WaterChunks = new List<WaterChunk>();
+
     private float m_ElapsedTime = 0.0f;
+
+    public int chunkLength
+    {
+        get
+        {
+            return m_ChunkLength;
+        }
+    }
+
+    public int vertexDensity
+    {
+        get
+        {
+            return m_VertexDensity;
+        }
+    }
 
     public float GetHeight(float x, float z)
     {
@@ -79,9 +95,8 @@ public class Water : MonoBehaviour
     {
         m_Mesh = new Mesh();
         MeshFilter meshFilter = GetComponent(typeof(MeshFilter)) as MeshFilter;
-        m_MeshCollider = GetComponent(typeof(MeshCollider)) as MeshCollider;
 
-        for (int x = 0; x < m_Length; ++x)
+        for (int x = 0; x < m_ChunkLength; ++x)
         {
             for (int z = 0; z < m_Width; ++z)
             {
@@ -92,13 +107,19 @@ public class Water : MonoBehaviour
                     new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, z * m_VertexDensity)
                 );
             }
+        }
 
-            AddQuad(
-                new Vector3(x * m_VertexDensity, -10.0f, 0.0f),
-                new Vector3(x * m_VertexDensity, 0.0f, 0.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, 0.0f),
-                new Vector3((x + 1.0f) * m_VertexDensity, -10.0f, 0.0f)
+        for (int i = 0; i < m_ChunkCount; ++i)
+        {
+            GameObject go = new GameObject("WaterChunk_" + i);
+            go.transform.parent = transform;
+            go.transform.position = new Vector3(
+                transform.position.x + m_ChunkLength * i,
+                transform.position.y, transform.position.z
             );
+            WaterChunk waterChunk = go.AddComponent(typeof(WaterChunk)) as WaterChunk;
+            waterChunk.Initialize(this);
+            m_WaterChunks.Add(waterChunk);
         }
 
         m_Mesh.vertices = m_Vertices.ToArray();
@@ -108,7 +129,6 @@ public class Water : MonoBehaviour
         m_Mesh.RecalculateBounds();
 
         meshFilter.mesh = m_Mesh;
-        m_MeshCollider.sharedMesh = m_Mesh;
     }
 
     private void Update()
@@ -117,18 +137,13 @@ public class Water : MonoBehaviour
 
         for (int i = 0; i < m_Vertices.Count; ++i)
         {
-            if (m_Vertices[i].y > -5.0f)
-            {
-                m_Vertices[i] = new Vector3(m_Vertices[i].x, GetHeight(m_Vertices[i].x, m_Vertices[i].z), m_Vertices[i].z);
-            }
+            m_Vertices[i] = new Vector3(m_Vertices[i].x, GetHeight(m_Vertices[i].x, m_Vertices[i].z), m_Vertices[i].z);
         }
 
         m_Mesh.vertices = m_Vertices.ToArray();
         m_Mesh.RecalculateNormals();
         m_Mesh.RecalculateTangents();
         m_Mesh.RecalculateBounds();
-
-        m_MeshCollider.sharedMesh = m_Mesh;
     }
 
     private void FixedUpdate()
