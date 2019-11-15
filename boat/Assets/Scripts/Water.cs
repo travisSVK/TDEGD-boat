@@ -37,8 +37,6 @@ public class Water : MonoBehaviour
 
     private List<Vector3> m_Vertices = new List<Vector3>();
 
-    private List<Color> m_Color = new List<Color>();
-
     private List<int> m_Indices = new List<int>();
 
     private float m_ElapsedTime = 0.0f;
@@ -67,14 +65,6 @@ public class Water : MonoBehaviour
         m_Vertices.Add(p1);
         m_Vertices.Add(p2);
         m_Vertices.Add(p3);
-
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
-        m_Color.Add(Color.blue);
 
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
@@ -134,7 +124,6 @@ public class Water : MonoBehaviour
         }
 
         m_Mesh.vertices = m_Vertices.ToArray();
-        m_Mesh.colors = m_Color.ToArray();
         m_Mesh.RecalculateNormals();
         m_Mesh.RecalculateTangents();
         m_Mesh.RecalculateBounds();
