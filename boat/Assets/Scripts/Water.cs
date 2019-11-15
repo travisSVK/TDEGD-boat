@@ -18,7 +18,7 @@ public class Water : MonoBehaviour
 
     [SerializeField]
     private int m_Length = 100;
-    
+
     [SerializeField]
     private int m_Width = 10;
 
@@ -39,9 +39,22 @@ public class Water : MonoBehaviour
 
     private List<Color> m_Color = new List<Color>();
 
-    private List<Vector3> m_TranslatedVertices = new List<Vector3>();
-
     private List<int> m_Indices = new List<int>();
+
+    private float m_ElapsedTime = 0.0f;
+
+    public float GetHeight(float x, float z)
+    {
+        float height = 0.0f;
+        for (int i = 0; i < m_Waves.Count; ++i)
+        {
+            float elapsedTime = m_ElapsedTime * m_Waves[i].waveVelocity;
+            float waveFactor = Mathf.Sin(elapsedTime + x * m_Waves[i].waveFrequency) * m_Waves[i].waveAmplitude;
+            float noiseFactor = Mathf.PerlinNoise((x + elapsedTime) * m_Waves[i].noiseFrequency, z * m_Waves[i].noiseFrequency) * m_Waves[i].noiseStrength;
+            height += (waveFactor + noiseFactor) * m_Waves[i].influence;
+        }
+        return height;
+    }
 
     private void AddQuad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
     {
@@ -54,14 +67,6 @@ public class Water : MonoBehaviour
         m_Vertices.Add(p1);
         m_Vertices.Add(p2);
         m_Vertices.Add(p3);
-
-        m_TranslatedVertices.Add(p0);
-        m_TranslatedVertices.Add(p1);
-        m_TranslatedVertices.Add(p3);
-
-        m_TranslatedVertices.Add(p1);
-        m_TranslatedVertices.Add(p2);
-        m_TranslatedVertices.Add(p3);
 
         m_Color.Add(Color.blue);
         m_Color.Add(Color.blue);
@@ -85,8 +90,6 @@ public class Water : MonoBehaviour
         m_Mesh = new Mesh();
         MeshFilter meshFilter = GetComponent(typeof(MeshFilter)) as MeshFilter;
         m_MeshCollider = GetComponent(typeof(MeshCollider)) as MeshCollider;
-
-
 
         for (int x = 0; x < m_Length; ++x)
         {
@@ -120,32 +123,27 @@ public class Water : MonoBehaviour
 
     private void Update()
     {
+        m_ElapsedTime = Time.realtimeSinceStartup;
 
         for (int i = 0; i < m_Vertices.Count; ++i)
         {
             if (m_Vertices[i].y > -5.0f)
             {
-                m_TranslatedVertices[i] = m_Vertices[i];
-                for (int j = 0; j < m_Waves.Count; ++j)
-                {
-                    float elapsedTime = Time.realtimeSinceStartup * m_Waves[j].waveVelocity;
-                    float yValue = Mathf.Sin(elapsedTime + m_Vertices[i].x * m_Waves[j].waveFrequency) * m_Waves[j].waveAmplitude;
-                    yValue += Mathf.PerlinNoise((m_Vertices[i].x + elapsedTime) * m_Waves[j].noiseFrequency, m_Vertices[i].z * m_Waves[j].noiseFrequency) * m_Waves[j].noiseStrength;
-                    m_TranslatedVertices[i] += new Vector3(0.0f, yValue * m_Waves[j].influence, 0.0f);
-                }
-            }
-            else
-            {
-                m_TranslatedVertices[i] = m_Vertices[i];
+                m_Vertices[i] = new Vector3(m_Vertices[i].x, GetHeight(m_Vertices[i].x, m_Vertices[i].z), m_Vertices[i].z);
             }
         }
 
-        m_Mesh.vertices = m_TranslatedVertices.ToArray();
+        m_Mesh.vertices = m_Vertices.ToArray();
         m_Mesh.colors = m_Color.ToArray();
         m_Mesh.RecalculateNormals();
         m_Mesh.RecalculateTangents();
         m_Mesh.RecalculateBounds();
 
         m_MeshCollider.sharedMesh = m_Mesh;
+    }
+
+    private void FixedUpdate()
+    {
+        m_ElapsedTime = Time.realtimeSinceStartup;
     }
 }
