@@ -25,7 +25,6 @@ public class UnderWaterCheck : MonoBehaviour
         {
             Vector3 forcePointPosition = forcePoint.position;
             float depth = m_Water.GetHeight(forcePointPosition.x, forcePointPosition.z) - forcePointPosition.y;
-            Debug.Log(m_Buoyancy * depth);
             m_Rigidbody.AddForceAtPosition(m_Buoyancy * depth, forcePointPosition, ForceMode.Force);
             //if (depth > 0.0f)
             //{

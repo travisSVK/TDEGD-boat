@@ -5,13 +5,9 @@ using UnityEngine;
 public class MeshGenerator : MonoBehaviour
 {
     private MeshFilter m_MeshFilter = null;
-
     private MeshRenderer m_MeshRenderer = null;
-
     private Mesh m_Mesh = null;
-
     private List<Vector3> m_Vertices = new List<Vector3>();
-
     private List<int> m_Indices = new List<int>();
 
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
@@ -54,27 +50,17 @@ public class MeshGenerator : MonoBehaviour
         m_Indices.Clear();
     }
 
-    public int Count()
-    {
-        return m_Vertices.Count;
-    }
-
-    public Vector3 GetVertex(int index)
-    {
-        return m_Vertices[index];
-    }
-
     public void Refresh()
     {
         enabled = true;
     }
 
-    public void SetVertex(int index, Vector3 value)
+    public void SetMaterial(Material material)
     {
-        m_Vertices[index] = value;
+        m_MeshRenderer.material = material;
     }
 
-    private void Start()
+    private void Awake()
     {
         m_MeshFilter = GetComponent(typeof(MeshFilter)) as MeshFilter;
         if (!m_MeshFilter)

@@ -25,15 +25,7 @@ public class WaterEdgeMesh : MonoBehaviour
             m_MeshGenerator = gameObject.AddComponent(typeof(MeshGenerator)) as MeshGenerator;
         }
 
-        for (int x = 0; x < m_Water.chunkLength; ++x)
-        {
-            m_MeshGenerator.AddQuad(
-                new Vector3(x * m_Water.vertexDensity, -10.0f, 0.0f),
-                new Vector3(x * m_Water.vertexDensity, 0.0f, 0.0f),
-                new Vector3((x + 1.0f) * m_Water.vertexDensity, 0.0f, 0.0f),
-                new Vector3((x + 1.0f) * m_Water.vertexDensity, -10.0f, 0.0f)
-            );
-        }
+        m_MeshGenerator.SetMaterial(m_Water.waterEdgeMaterial);
 
         m_isInitialized = true;
         return true;
@@ -53,15 +45,20 @@ public class WaterEdgeMesh : MonoBehaviour
 
     private void UpdateMesh()
     {
+        m_MeshGenerator.Clear();
+
         Vector3 position = transform.position;
-        for (int i = 0; i < m_MeshGenerator.Count(); ++i)
+        for (int x = 0; x < m_Water.chunkLength; ++x)
         {
-            Vector3 vertex = m_MeshGenerator.GetVertex(i);
-            if (vertex.y > -5.0f)
-            {
-                vertex = new Vector3(vertex.x, m_Water.GetHeight(position.x + vertex.x, position.z + vertex.z), vertex.z);
-            }
-            m_MeshGenerator.SetVertex(i, vertex);
+            float minX = x / (float)m_Water.subdivisions;
+            float maxX = (x + 1) / (float)m_Water.subdivisions;
+
+            Vector3 p0 = new Vector3(minX, -10.0f, 0.0f);
+            Vector3 p1 = new Vector3(minX, m_Water.GetHeight(position.x + minX, 0.0f), 0.0f);
+            Vector3 p2 = new Vector3(maxX, m_Water.GetHeight(position.x + maxX, 0.0f), 0.0f);
+            Vector3 p3 = new Vector3(maxX, -10.0f, 0.0f);
+
+            m_MeshGenerator.AddQuad(p0, p1, p2, p3);
         }
 
         m_MeshGenerator.Refresh();

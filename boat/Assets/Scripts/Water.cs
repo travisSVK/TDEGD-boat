@@ -26,16 +26,16 @@ public class Water : MonoBehaviour
     private int m_ChunkCount = 10;
 
     [SerializeField]
-    private int m_VertexDensity;
+    private int m_Subdivisions = 1;
+
+    [SerializeField]
+    private Material m_WaterEdgeMaterial = null;
+
+    [SerializeField]
+    private Material m_WaterSurfaceMaterial = null;
 
     [SerializeField]
     private List<WaveProperties> m_Waves = new List<WaveProperties>();
-
-    private Mesh m_Mesh = null;
-
-    private List<Vector3> m_Vertices = new List<Vector3>();
-
-    private List<int> m_Indices = new List<int>();
 
     private List<WaterChunk> m_WaterChunks = new List<WaterChunk>();
 
@@ -49,11 +49,35 @@ public class Water : MonoBehaviour
         }
     }
 
-    public int vertexDensity
+    public int width
     {
         get
         {
-            return m_VertexDensity;
+            return m_Width;
+        }
+    }
+
+    public int subdivisions
+    {
+        get
+        {
+            return m_Subdivisions;
+        }
+    }
+
+    public Material waterEdgeMaterial
+    {
+        get
+        {
+            return m_WaterEdgeMaterial;
+        }
+    }
+
+    public Material waterSurfaceMaterial
+    {
+        get
+        {
+            return m_WaterSurfaceMaterial;
         }
     }
 
@@ -70,48 +94,17 @@ public class Water : MonoBehaviour
         return height;
     }
 
-    private void AddQuad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        int current = m_Vertices.Count;
-
-        m_Vertices.Add(p0);
-        m_Vertices.Add(p1);
-        m_Vertices.Add(p3);
-
-        m_Vertices.Add(p1);
-        m_Vertices.Add(p2);
-        m_Vertices.Add(p3);
-
-        m_Indices.Add(current + 0);
-        m_Indices.Add(current + 1);
-        m_Indices.Add(current + 2);
-
-        m_Indices.Add(current + 3);
-        m_Indices.Add(current + 4);
-        m_Indices.Add(current + 5);
-    }
-
     public void ApplyBuoyancy()
     {
 
     }
 
-    private void Start()
+    private void Awake()
     {
-        m_Mesh = new Mesh();
-        MeshFilter meshFilter = GetComponent(typeof(MeshFilter)) as MeshFilter;
-
-        for (int x = 0; x < m_ChunkLength; ++x)
+        // To avoid division with zero.
+        if (m_Subdivisions <= 0)
         {
-            for (int z = 0; z < m_Width; ++z)
-            {
-                AddQuad(
-                    new Vector3(x * m_VertexDensity, 0.0f, z * m_VertexDensity),
-                    new Vector3(x * m_VertexDensity, 0.0f, (z + 1.0f) * m_VertexDensity),
-                    new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, (z + 1.0f) * m_VertexDensity),
-                    new Vector3((x + 1.0f) * m_VertexDensity, 0.0f, z * m_VertexDensity)
-                );
-            }
+            m_Subdivisions = 1;
         }
 
         for (int i = 0; i < m_ChunkCount; ++i)
@@ -126,29 +119,11 @@ public class Water : MonoBehaviour
             waterChunk.Initialize(this);
             m_WaterChunks.Add(waterChunk);
         }
-
-        m_Mesh.vertices = m_Vertices.ToArray();
-        m_Mesh.triangles = m_Indices.ToArray();
-        m_Mesh.RecalculateNormals();
-        m_Mesh.RecalculateTangents();
-        m_Mesh.RecalculateBounds();
-
-        meshFilter.mesh = m_Mesh;
     }
 
     private void Update()
     {
         m_ElapsedTime = Time.realtimeSinceStartup;
-
-        for (int i = 0; i < m_Vertices.Count; ++i)
-        {
-            m_Vertices[i] = new Vector3(m_Vertices[i].x, GetHeight(m_Vertices[i].x, m_Vertices[i].z), m_Vertices[i].z);
-        }
-
-        m_Mesh.vertices = m_Vertices.ToArray();
-        m_Mesh.RecalculateNormals();
-        m_Mesh.RecalculateTangents();
-        m_Mesh.RecalculateBounds();
     }
 
     private void FixedUpdate()
