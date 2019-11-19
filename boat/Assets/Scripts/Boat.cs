@@ -10,16 +10,23 @@ public class Boat : MonoBehaviour
     private BoatMesh m_BoatMesh;
     private Rigidbody m_RigidBody;
     private Water m_Water;
+    private bool m_StartPositionSet = false;
 
     private void Start()
     {
         m_RigidBody = gameObject.GetComponent<Rigidbody>();
         m_BoatMesh = new BoatMesh(gameObject);
         m_Water = FindObjectOfType(typeof(Water)) as Water;
+        
     }
 
     private void Update()
     {
+        if (!m_StartPositionSet)
+        {
+            transform.position = new Vector3(transform.position.x, m_Water.GetHeight(transform.position.x, transform.position.z), transform.position.z);
+            m_StartPositionSet = true;
+        }
         m_BoatMesh.GenerateUnderwaterMesh(m_Water);
     }
 
@@ -38,7 +45,7 @@ public class Boat : MonoBehaviour
                 m_RigidBody.AddForceAtPosition(buoyancyForce, triangle.center);
                 
                 // debug Normal
-                Debug.DrawRay(triangle.center, triangle.normal * 3f, Color.white);
+                //Debug.DrawRay(triangle.center, triangle.normal * 3f, Color.white);
 
                 // debug buoyancy
                 Debug.DrawRay(triangle.center, buoyancyForce.normalized * -3f, Color.blue);
@@ -59,8 +66,8 @@ public class Boat : MonoBehaviour
         // h - distance to surface
         // S - surface area
         // n - normal to the surface
-        Vector3 buoyancyForce = waterDensity * Physics.gravity.y * triangle.distanceToSurface * triangle.area *//* triangle.normal * 0.00005f;
-        (triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * 0.00002f;
+        Vector3 buoyancyForce = waterDensity * Physics.gravity.y * triangle.distanceToSurface * triangle.area * triangle.normal * 0.0005f;
+        //(triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * 0.01f;
 
         //The vertical component of the hydrostatic forces don't cancel out but the horizontal do
         buoyancyForce.x = 0f;
