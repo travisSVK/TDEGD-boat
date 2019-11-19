@@ -66,7 +66,7 @@ public class Boat : MonoBehaviour
         // h - distance to surface
         // S - surface area
         // n - normal to the surface
-        Vector3 buoyancyForce = waterDensity * Physics.gravity.y * triangle.distanceToSurface * triangle.area * triangle.normal * 0.0005f;
+        Vector3 buoyancyForce = waterDensity * Physics.gravity.y * triangle.distanceToSurface * triangle.area * triangle.normal * 0.00046f;
         //(triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * 0.01f;
 
         //The vertical component of the hydrostatic forces don't cancel out but the horizontal do
