@@ -13,22 +13,34 @@ public class Triangle
 
     public Vector3 normal
     {
-        get { return m_Normal; }
+        get 
+        {
+            return m_Normal;
+        }
     }
 
     public Vector3 center
     {
-        get { return m_Center; }
+        get
+        {
+            return m_Center;
+        }
     }
 
     public float distanceToSurface
     {
-        get { return m_DistanceToSurface; }
+        get 
+        {
+            return m_DistanceToSurface;
+        }
     }
 
     public float area
     {
-        get { return m_Area; }
+        get
+        { 
+            return m_Area; 
+        }
     }
 
     public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, Water water)
