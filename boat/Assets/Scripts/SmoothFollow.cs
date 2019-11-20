@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class SmoothFollow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private Transform m_Target = null;
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        transform.position = new Vector3(m_Target.position.x, transform.position.y, transform.position.z);
     }
 }

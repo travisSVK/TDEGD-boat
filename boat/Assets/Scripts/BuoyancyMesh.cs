@@ -1,29 +1,43 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class BuoyancyMesh : MonoBehaviour
 {
-    [SerializeField] private Mesh m_Mesh = null;
-    private Vector3[] m_BoatVertices;
-    private int[] m_BoatIndices;
-    private List<Triangle> m_UnderWaterTriangles = new List<Triangle>();
-    private Vector3[] m_BoatVerticesGlobal;
-    private float[] m_WaterDistances;
-    private Water m_Water;
+    [SerializeField]
+    private Mesh m_Mesh = null;
 
-    public List<Triangle> underWaterTriangles
+    private Vector3[] m_BoatVertices = null;
+    private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
+    private Vector3[] m_BoatVerticesGlobal = null;
+    private int[] m_BoatIndices = null;
+    private float[] m_WaterDistances = null;
+    private Water m_Water = null;
+
+    public Mesh mesh
     {
-        get { return m_UnderWaterTriangles; }
+        get
+        {
+            return m_Mesh;
+        }
+    }
+
+    public List<Triangle> underwaterTriangles
+    {
+        get 
+        {
+            return m_UnderwaterTriangles;
+        }
     }
 
     private class VertexData
     {
-        //The distance to water from this vertex
+        // The distance to water from this vertex.
         public float distance;
-        //An index so we can form clockwise triangles
+
+        // An index so we can form clockwise triangles.
         public int index;
-        //The global Vector3 position of the vertex
+
+        // The global Vector3 position of the vertex.
         public Vector3 globalVertexPos;
     }
 
@@ -37,20 +51,20 @@ public class BuoyancyMesh : MonoBehaviour
     }
 
     /*
-    * Keep the infor about mesh triangles that reside under water
-    * Follows algorithm from this article:
-    * https://www.gamasutra.com/view/news/237528/Water_interaction_model_for_boats_in_video_games.php
-    */
+     * Keep the infor about mesh triangles that reside under water
+     * Follows algorithm from this article:
+     * https://www.gamasutra.com/view/news/237528/Water_interaction_model_for_boats_in_video_games.php
+     */
     private void FixedUpdate()
     {
-        m_UnderWaterTriangles.Clear();
+        m_UnderwaterTriangles.Clear();
         PrepareForGeneration();
         List<VertexData> vertexData = new List<VertexData>();
         vertexData.Add(new VertexData());
         vertexData.Add(new VertexData());
         vertexData.Add(new VertexData());
 
-        // loop throough the triangles
+        // Loop throough the triangles.
         for (int i = 0; i < m_BoatIndices.Length; i += 3)
         {
             for (int x = 0; x < 3; x++)
@@ -71,8 +85,8 @@ public class BuoyancyMesh : MonoBehaviour
                 Vector3 p2 = vertexData[1].globalVertexPos;
                 Vector3 p3 = vertexData[2].globalVertexPos;
 
-                //Save the triangle
-                m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, m_Water));
+                // Save the triangle.
+                m_UnderwaterTriangles.Add(new Triangle(p1, p2, p3, m_Water));
                 continue;
             }
 
@@ -90,8 +104,8 @@ public class BuoyancyMesh : MonoBehaviour
     }
 
     /*
-    * Add triangles with one vertex above water surface.
-    */
+     * Add triangles with one vertex above water surface.
+     */
     private void AddTrianglesOneAboveWater(List<VertexData> vertexData)
     {
         //H is always at position 0 (see GetNumberAboveWater method description)
@@ -147,13 +161,13 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 I_L = LI_L + L;
         
         // add 2 triangles
-        m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, m_Water));
-        m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_Water));
     }
 
     /*
-    * Add triangles with two vertices above water surface.
-    */
+     * Add triangles with two vertices above water surface.
+     */
     private void AddTrianglesTwoAboveWater(List<VertexData> vertexData)
     {
         // L is always the last 
@@ -212,7 +226,7 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 J_H = LJ_H + L;
         
         //1 triangle below the water
-        m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_Water));
     }
 
     /*
@@ -254,6 +268,7 @@ public class BuoyancyMesh : MonoBehaviour
                 numberAboveWater++;
             }
         }
+
         vertexData[0] = max;
         vertexData[1] = mid;
         vertexData[2] = min;
@@ -261,9 +276,9 @@ public class BuoyancyMesh : MonoBehaviour
     }
 
     /*
-    * Generate global positions and water surface distances beforehand, because
-    * some vertices are shared (decreasing number of computations)
-    */
+     * Generate global positions and water surface distances beforehand, because
+     * some vertices are shared (decreasing number of computations)
+     */
     private void PrepareForGeneration()
     {
         for (int i = 0; i < m_BoatVertices.Length; i++)

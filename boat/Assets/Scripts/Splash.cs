@@ -5,25 +5,28 @@ using UnityEngine;
 public class Splash : MonoBehaviour
 {
     [SerializeField]
-    private Mesh m_Mesh = null;
-
-    [SerializeField]
     private GameObject m_WaterSplashEffect = null;
 
     [SerializeField]
-    private float m_Threshold = 0.02f;
+    private float m_Threshold = 2.0f;
 
+    private Mesh m_Mesh = null;
     private Water m_Water = null;
     private List<Vector3> m_Vertices = new List<Vector3>();
     private List<bool> m_IsUnderwater = new List<bool>();
 
     private void Awake()
     {
-        if (!m_Mesh)
+        BuoyancyMesh buoyancyMesh = GetComponent(typeof(BuoyancyMesh)) as BuoyancyMesh;
+        if (buoyancyMesh)
         {
-            Debug.LogError("No mesh attached for Splash.");
-            enabled = false;
-            return;
+            m_Mesh = buoyancyMesh.mesh;
+            if (!m_Mesh)
+            {
+                Debug.LogError("No mesh attached for Splash.");
+                enabled = false;
+                return;
+            }
         }
 
         for (int i = 0; i < m_Mesh.vertexCount; ++i)

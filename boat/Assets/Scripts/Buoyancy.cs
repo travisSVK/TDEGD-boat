@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Buoyancy : MonoBehaviour
 {
-    private float m_WaterDensity = 1027.0f;
     [SerializeField] private float m_BouyancyCoeficient = 0.004f;
     [SerializeField] private float distanceToSurfaceThreshold = 0.1f;
-    [SerializeField] private float normalThreshold = 0.0f;
     
+    private bool m_StartPositionSet = false;
+    private float m_WaterDensity = 1027.0f;
     private BuoyancyMesh m_BoatMesh;
     private Rigidbody m_RigidBody;
-    private bool m_StartPositionSet = false;
 
     private void Start()
     {
@@ -19,17 +17,12 @@ public class Buoyancy : MonoBehaviour
         m_BoatMesh = GetComponent(typeof(BuoyancyMesh)) as BuoyancyMesh;
     }
 
-    private void Update()
-    {
-
-    }
-
     private void FixedUpdate()
     {
-        if (m_BoatMesh.underWaterTriangles.Count > 0)
+        if (m_BoatMesh.underwaterTriangles.Count > 0)
         {
             // Get all triangles
-            List<Triangle> underWaterTriangles = m_BoatMesh.underWaterTriangles;
+            List<Triangle> underWaterTriangles = m_BoatMesh.underwaterTriangles;
 
             foreach (Triangle triangle in underWaterTriangles)
             {

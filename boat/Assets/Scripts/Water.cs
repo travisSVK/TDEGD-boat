@@ -16,35 +16,17 @@ public class Water : MonoBehaviour
         public float influence;
     }
 
-    [SerializeField]
-    private int m_ChunkLength = 20;
-
-    [SerializeField]
-    private int m_Width = 10;
-
-    [SerializeField]
-    private int m_ChunkCount = 10;
-
-    [SerializeField]
-    private int m_Subdivisions = 1;
-
-    [SerializeField]
-    private Material m_FloorEdgeMaterial = null;
-
-    [SerializeField]
-    private Material m_FloorSurfaceMaterial = null;
-
-    [SerializeField]
-    private Material m_WaterEdgeMaterial = null;
-
-    [SerializeField]
-    private Material m_WaterSurfaceMaterial = null;
-
-    [SerializeField]
-    private List<WaveProperties> m_Waves = new List<WaveProperties>();
+    [SerializeField] private int m_ChunkLength = 20;
+    [SerializeField] private int m_Width = 10;
+    [SerializeField] private int m_ChunkCount = 10;
+    [SerializeField] private int m_Subdivisions = 1;
+    [SerializeField] private Material m_FloorEdgeMaterial = null;
+    [SerializeField] private Material m_FloorSurfaceMaterial = null;
+    [SerializeField] private Material m_WaterEdgeMaterial = null;
+    [SerializeField] private Material m_WaterSurfaceMaterial = null;
+    [SerializeField] private List<WaveProperties> m_Waves = new List<WaveProperties>();
 
     private List<WaterChunk> m_WaterChunks = new List<WaterChunk>();
-
     private float m_ElapsedTime = 0.0f;
 
     public int chunkLength

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FloorSurfaceMesh : MonoBehaviour
 {
@@ -23,7 +21,6 @@ public class FloorSurfaceMesh : MonoBehaviour
         }
 
         m_MeshGenerator.SetMaterial(m_Water.floorSurfaceMaterial);
-
         UpdateMesh();
 
         return true;
