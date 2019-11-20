@@ -23,11 +23,7 @@ public class Boat : MonoBehaviour
 
     private void Update()
     {
-        if (!m_StartPositionSet)
-        {
-            transform.position = new Vector3(transform.position.x, m_Water.GetHeight(transform.position.x, transform.position.z), transform.position.z);
-            m_StartPositionSet = true;
-        }
+
     }
 
     private void FixedUpdate()
