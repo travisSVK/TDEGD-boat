@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SmoothFollow : MonoBehaviour
 {
-    [SerializeField]
-    private Transform m_Target = null;
+    [SerializeField] private Transform m_Target = null;
 
     private void LateUpdate()
     {

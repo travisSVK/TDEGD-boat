@@ -23,7 +23,8 @@ public class WaterSurfaceMesh : MonoBehaviour
             m_MeshGenerator = gameObject.AddComponent(typeof(MeshGenerator)) as MeshGenerator;
         }
 
-        m_MeshGenerator.SetMaterial(m_Water.waterSurfaceMaterial);
+        m_MeshGenerator.material = m_Water.waterSurfaceMaterial;
+        m_MeshGenerator.castShadows = false;
 
         m_isInitialized = true;
         return true;
@@ -55,10 +56,10 @@ public class WaterSurfaceMesh : MonoBehaviour
                 float minZ = z / (float)m_Water.subdivisions;
                 float maxZ = (z + 1) / (float)m_Water.subdivisions;
 
-                Vector3 p0 = new Vector3(minX, m_Water.GetHeight(position.x + minX, position.z + minZ), minZ);
-                Vector3 p1 = new Vector3(minX, m_Water.GetHeight(position.x + minX, position.z + maxZ), maxZ);
-                Vector3 p2 = new Vector3(maxX, m_Water.GetHeight(position.x + maxX, position.z + maxZ), maxZ);
-                Vector3 p3 = new Vector3(maxX, m_Water.GetHeight(position.x + maxX, position.z + minZ), minZ);
+                Vector3 p0 = new Vector3(minX, m_Water.GetWaterHeight(position.x + minX, position.z + minZ), minZ);
+                Vector3 p1 = new Vector3(minX, m_Water.GetWaterHeight(position.x + minX, position.z + maxZ), maxZ);
+                Vector3 p2 = new Vector3(maxX, m_Water.GetWaterHeight(position.x + maxX, position.z + maxZ), maxZ);
+                Vector3 p3 = new Vector3(maxX, m_Water.GetWaterHeight(position.x + maxX, position.z + minZ), minZ);
 
                 m_MeshGenerator.AddQuad(p0, p1, p2, p3);
             }

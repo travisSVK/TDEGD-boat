@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class Splash : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject m_WaterSplashEffect = null;
-
-    [SerializeField]
-    private float m_Threshold = 2.0f;
+    [SerializeField] private GameObject m_WaterSplashEffect = null;
+    [SerializeField] private float m_Threshold = 2.0f;
 
     private Mesh m_Mesh = null;
     private Water m_Water = null;

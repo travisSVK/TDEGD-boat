@@ -20,7 +20,7 @@ public class FloorSurfaceMesh : MonoBehaviour
             m_MeshGenerator = gameObject.AddComponent(typeof(MeshGenerator)) as MeshGenerator;
         }
 
-        m_MeshGenerator.SetMaterial(m_Water.floorSurfaceMaterial);
+        m_MeshGenerator.material = m_Water.floorSurfaceMaterial;
         UpdateMesh();
 
         return true;
@@ -40,10 +40,10 @@ public class FloorSurfaceMesh : MonoBehaviour
                 float minZ = z / (float)m_Water.subdivisions;
                 float maxZ = (z + 1) / (float)m_Water.subdivisions;
 
-                Vector3 p0 = new Vector3(minX, -10.0f, minZ);
-                Vector3 p1 = new Vector3(minX, -10.0f, maxZ);
-                Vector3 p2 = new Vector3(maxX, -10.0f, maxZ);
-                Vector3 p3 = new Vector3(maxX, -10.0f, minZ);
+                Vector3 p0 = new Vector3(minX, m_Water.GetFloorDepth(position.x + minX, position.z + minZ), minZ);
+                Vector3 p1 = new Vector3(minX, m_Water.GetFloorDepth(position.x + minX, position.z + maxZ), maxZ);
+                Vector3 p2 = new Vector3(maxX, m_Water.GetFloorDepth(position.x + maxX, position.z + maxZ), maxZ);
+                Vector3 p3 = new Vector3(maxX, m_Water.GetFloorDepth(position.x + maxX, position.z + minZ), minZ);
 
                 m_MeshGenerator.AddQuad(p0, p1, p2, p3);
             }

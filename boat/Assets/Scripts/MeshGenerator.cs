@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MeshGenerator : MonoBehaviour
 {
@@ -9,6 +10,34 @@ public class MeshGenerator : MonoBehaviour
     private Mesh m_Mesh = null;
     private List<Vector3> m_Vertices = new List<Vector3>();
     private List<int> m_Indices = new List<int>();
+
+    public bool castShadows
+    {
+        get
+        {
+            return m_MeshRenderer.shadowCastingMode == ShadowCastingMode.On ||
+                m_MeshRenderer.shadowCastingMode == ShadowCastingMode.ShadowsOnly ||
+                m_MeshRenderer.shadowCastingMode == ShadowCastingMode.TwoSided;
+        }
+
+        set
+        {
+            m_MeshRenderer.shadowCastingMode = value ? ShadowCastingMode.On : ShadowCastingMode.Off;
+        }
+    }
+
+    public Material material
+    {
+        get
+        {
+            return m_MeshRenderer.material;
+        }
+
+        set
+        {
+            m_MeshRenderer.material = value;
+        }
+    }
 
     public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2)
     {
@@ -53,11 +82,6 @@ public class MeshGenerator : MonoBehaviour
     public void Refresh()
     {
         enabled = true;
-    }
-
-    public void SetMaterial(Material material)
-    {
-        m_MeshRenderer.material = material;
     }
 
     private void Awake()

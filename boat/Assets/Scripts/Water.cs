@@ -85,7 +85,7 @@ public class Water : MonoBehaviour
         }
     }
 
-    public float GetHeight(float x, float z)
+    public float GetWaterHeight(float x, float z)
     {
         float height = 0.0f;
         for (int i = 0; i < m_Waves.Count; ++i)
@@ -98,9 +98,14 @@ public class Water : MonoBehaviour
         return height;
     }
 
+    public float GetFloorDepth(float x, float z)
+    {
+        return (Mathf.PerlinNoise(x * 0.17f, z * 0.17f) * 5.0f) - 10.0f;
+    }
+
     public bool IsUnderwater(Vector3 point)
     {
-        return GetHeight(point.x, point.z) > point.y;
+        return GetWaterHeight(point.x, point.z) > point.y;
     }
 
     private void Awake()

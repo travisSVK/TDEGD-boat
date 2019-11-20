@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WaterEdgeMesh : MonoBehaviour
 {
     private Water m_Water = null;
-
     private MeshGenerator m_MeshGenerator = null;
-
     private bool m_IsInitialized = false;
 
     public bool Initialize(Water water)
@@ -25,7 +21,7 @@ public class WaterEdgeMesh : MonoBehaviour
             m_MeshGenerator = gameObject.AddComponent(typeof(MeshGenerator)) as MeshGenerator;
         }
 
-        m_MeshGenerator.SetMaterial(m_Water.waterEdgeMaterial);
+        m_MeshGenerator.material = m_Water.waterEdgeMaterial;
 
         m_IsInitialized = true;
         return true;
@@ -53,10 +49,10 @@ public class WaterEdgeMesh : MonoBehaviour
             float minX = x / (float)m_Water.subdivisions;
             float maxX = (x + 1) / (float)m_Water.subdivisions;
 
-            Vector3 p0 = new Vector3(minX, -10.0f, 0.0f);
-            Vector3 p1 = new Vector3(minX, m_Water.GetHeight(position.x + minX, 0.0f), 0.0f);
-            Vector3 p2 = new Vector3(maxX, m_Water.GetHeight(position.x + maxX, 0.0f), 0.0f);
-            Vector3 p3 = new Vector3(maxX, -10.0f, 0.0f);
+            Vector3 p0 = new Vector3(minX, m_Water.GetFloorDepth(position.x + minX, 0.0f), 0.0f);
+            Vector3 p1 = new Vector3(minX, m_Water.GetWaterHeight(position.x + minX, 0.0f), 0.0f);
+            Vector3 p2 = new Vector3(maxX, m_Water.GetWaterHeight(position.x + maxX, 0.0f), 0.0f);
+            Vector3 p3 = new Vector3(maxX, m_Water.GetFloorDepth(position.x + maxX, 0.0f), 0.0f);
 
             m_MeshGenerator.AddQuad(p0, p1, p2, p3);
         }

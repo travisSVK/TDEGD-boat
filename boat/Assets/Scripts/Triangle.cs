@@ -52,7 +52,7 @@ public class Triangle
         m_Center = (p1 + p2 + p3) / 3f;
 
         //Distance to the surface from the center of the triangle
-        float waterHeight = water.GetHeight(m_Center.x, m_Center.z);
+        float waterHeight = water.GetWaterHeight(m_Center.x, m_Center.z);
         m_DistanceToSurface = Mathf.Abs(waterHeight - m_Center.y);
 
         //Normal to the triangle

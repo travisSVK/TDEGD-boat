@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 public class BuoyancyMesh : MonoBehaviour
 {
-    [SerializeField]
-    private Mesh m_Mesh = null;
+    [SerializeField] private Mesh m_Mesh = null;
 
     private Vector3[] m_BoatVertices = null;
     private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
@@ -285,7 +284,7 @@ public class BuoyancyMesh : MonoBehaviour
         {
             Vector3 globalPosition = transform.TransformPoint(m_BoatVertices[i]);
             m_BoatVerticesGlobal[i] = globalPosition;
-            float waterHeight = m_Water.GetHeight(globalPosition.x, globalPosition.z);
+            float waterHeight = m_Water.GetWaterHeight(globalPosition.x, globalPosition.z);
             // positive -> above water and vice versa
             m_WaterDistances[i] = globalPosition.y - waterHeight;
         }

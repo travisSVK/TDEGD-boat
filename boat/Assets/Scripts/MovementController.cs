@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     [SerializeField] private float m_Acceleration = 1.0f;
+
     private Vector3 m_accelerationDirection = Vector3.zero;
     private Rigidbody m_RigidBody;
     // Start is called before the first frame update

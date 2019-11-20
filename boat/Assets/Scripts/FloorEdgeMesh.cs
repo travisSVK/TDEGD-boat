@@ -20,7 +20,7 @@ public class FloorEdgeMesh : MonoBehaviour
             m_MeshGenerator = gameObject.AddComponent(typeof(MeshGenerator)) as MeshGenerator;
         }
 
-        m_MeshGenerator.SetMaterial(m_Water.floorEdgeMaterial);
+        m_MeshGenerator.material = m_Water.floorEdgeMaterial;
 
         UpdateMesh();
 
@@ -37,9 +37,9 @@ public class FloorEdgeMesh : MonoBehaviour
             float minX = x / (float)m_Water.subdivisions;
             float maxX = (x + 1) / (float)m_Water.subdivisions;
 
-            Vector3 p0 = new Vector3(minX, -20.0f, 0.0f);
-            Vector3 p1 = new Vector3(minX, -10.0f, 0.0f);
-            Vector3 p2 = new Vector3(maxX, -10.0f, 0.0f);
+            Vector3 p0 = new Vector3(minX,-20.0f, 0.0f);
+            Vector3 p1 = new Vector3(minX, m_Water.GetFloorDepth(position.x + minX, 0.0f), 0.0f);
+            Vector3 p2 = new Vector3(maxX, m_Water.GetFloorDepth(position.x + maxX, 0.0f), 0.0f);
             Vector3 p3 = new Vector3(maxX, -20.0f, 0.0f);
 
             m_MeshGenerator.AddQuad(p0, p1, p2, p3);
