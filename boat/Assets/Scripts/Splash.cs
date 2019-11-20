@@ -55,7 +55,8 @@ public class Splash : MonoBehaviour
                 float magnitude = velocity.magnitude;
                 if (magnitude >= m_Threshold)
                 {
-                    Destroy(Instantiate(m_WaterSplashEffect, vertex, Quaternion.identity), 0.3f);
+                    Vector3 normal = transform.TransformDirection(m_Mesh.normals[i]);
+                    Destroy(Instantiate(m_WaterSplashEffect, vertex, Quaternion.LookRotation(Vector3.Reflect(Vector3.up, normal))), 0.3f);
                 }
             }
 

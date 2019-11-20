@@ -9,14 +9,14 @@ public class Buoyancy : MonoBehaviour
     [SerializeField] private float distanceToSurfaceThreshold = 0.1f;
     [SerializeField] private float normalThreshold = 0.0f;
     
-    private BoatMesh m_BoatMesh;
+    private BuoyancyMesh m_BoatMesh;
     private Rigidbody m_RigidBody;
     private bool m_StartPositionSet = false;
 
     private void Start()
     {
         m_RigidBody = GetComponent(typeof(Rigidbody)) as Rigidbody;
-        m_BoatMesh = GetComponent(typeof(BoatMesh)) as BoatMesh;
+        m_BoatMesh = GetComponent(typeof(BuoyancyMesh)) as BuoyancyMesh;
     }
 
     private void Update()

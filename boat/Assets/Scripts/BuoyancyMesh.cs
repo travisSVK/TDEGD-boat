@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoatMesh : MonoBehaviour
+public class BuoyancyMesh : MonoBehaviour
 {
     [SerializeField] private Mesh m_Mesh = null;
     private Vector3[] m_BoatVertices;
