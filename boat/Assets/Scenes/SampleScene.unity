@@ -200,8 +200,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564902105}
-  - component: {fileID: 564902107}
-  - component: {fileID: 564902106}
   - component: {fileID: 564902108}
   m_Layer: 4
   m_Name: Water
@@ -224,52 +222,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &564902106
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564902103}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 4b99cb8ac8c0d134eab85e2f95c3bc44, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &564902107
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564902103}
-  m_Mesh: {fileID: 0}
 --- !u!114 &564902108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,26 +237,32 @@ MonoBehaviour:
   m_ChunkLength: 20
   m_Width: 10
   m_ChunkCount: 10
-  m_VertexDensity: 1
+  m_Subdivisions: 1
+  m_FloorEdgeMaterial: {fileID: 2100000, guid: ff1ae99ec06d4694db372d3fa2e8b9d1, type: 2}
+  m_FloorSurfaceMaterial: {fileID: 2100000, guid: 01e6c7f261c9163438a65c1b7db3ce06,
+    type: 2}
+  m_WaterEdgeMaterial: {fileID: 2100000, guid: 3528fd27370f2724d8b87a82543bb48f, type: 2}
+  m_WaterSurfaceMaterial: {fileID: 2100000, guid: 4b99cb8ac8c0d134eab85e2f95c3bc44,
+    type: 2}
   m_Waves:
-  - waveAmplitude: 1.42
-    waveVelocity: 0.89
-    waveFrequency: 0.5
+  - waveAmplitude: 1.69
+    waveVelocity: 0.61
+    waveFrequency: 0.14
     noiseFrequency: 0.86
     noiseStrength: 1.18
     influence: 0.7
   - waveAmplitude: 4
-    waveVelocity: 0.24
-    waveFrequency: 0.37
-    noiseFrequency: 0.98
-    noiseStrength: 1
-    influence: 0.15
+    waveVelocity: 0.33
+    waveFrequency: 0.24
+    noiseFrequency: 0.74
+    noiseStrength: 0.68
+    influence: 0.18
   - waveAmplitude: 0.87
-    waveVelocity: 1
-    waveFrequency: 0.7
+    waveVelocity: 0.77
+    waveFrequency: 0.3
     noiseFrequency: 3
     noiseStrength: 0.2
-    influence: 0.2
+    influence: 0.27
 --- !u!1 &631893575
 GameObject:
   m_ObjectHideFlags: 0

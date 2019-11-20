@@ -5,9 +5,7 @@ using UnityEngine;
 public class WaterSurfaceMesh : MonoBehaviour
 {
     private Water m_Water;
-
     private MeshGenerator m_MeshGenerator = null;
-
     private bool m_isInitialized = false;
 
     public bool Initialize(Water water)

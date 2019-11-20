@@ -29,6 +29,12 @@ public class Water : MonoBehaviour
     private int m_Subdivisions = 1;
 
     [SerializeField]
+    private Material m_FloorEdgeMaterial = null;
+
+    [SerializeField]
+    private Material m_FloorSurfaceMaterial = null;
+
+    [SerializeField]
     private Material m_WaterEdgeMaterial = null;
 
     [SerializeField]
@@ -62,6 +68,22 @@ public class Water : MonoBehaviour
         get
         {
             return m_Subdivisions;
+        }
+    }
+
+    public Material floorEdgeMaterial
+    {
+        get
+        {
+            return m_FloorEdgeMaterial;
+        }
+    }
+
+    public Material floorSurfaceMaterial
+    {
+        get
+        {
+            return m_FloorSurfaceMaterial;
         }
     }
 

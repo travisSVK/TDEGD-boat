@@ -5,11 +5,10 @@ using UnityEngine;
 public class WaterChunk : MonoBehaviour
 {
     private Water m_Water = null;
-
+    private FloorEdgeMesh m_FloorEdgeMesh = null;
+    private FloorSurfaceMesh m_FloorSurfaceMesh = null;
     private WaterEdgeMesh m_WaterEdgeMesh = null;
-
     private WaterSurfaceMesh m_WaterSurfaceMesh = null;
-
     private bool m_isInitialized = false;
 
     public bool Initialize(Water water)
@@ -18,6 +17,24 @@ public class WaterChunk : MonoBehaviour
         if (!m_Water)
         {
             Debug.Log("Cannot provide null value to water.");
+            return false;
+        }
+
+        GameObject floorEdgeObject = new GameObject("FloorEdge");
+        floorEdgeObject.transform.parent = transform;
+        floorEdgeObject.transform.position = transform.position;
+        m_FloorEdgeMesh = floorEdgeObject.AddComponent(typeof(FloorEdgeMesh)) as FloorEdgeMesh;
+        if (!m_FloorEdgeMesh.Initialize(m_Water))
+        {
+            return false;
+        }
+
+        GameObject floorSurfaceObject = new GameObject("FloorSurface");
+        floorSurfaceObject.transform.parent = transform;
+        floorSurfaceObject.transform.position = transform.position;
+        m_FloorSurfaceMesh = floorSurfaceObject.AddComponent(typeof(FloorSurfaceMesh)) as FloorSurfaceMesh;
+        if (!m_FloorSurfaceMesh.Initialize(m_Water))
+        {
             return false;
         }
 
@@ -41,5 +58,19 @@ public class WaterChunk : MonoBehaviour
 
         m_isInitialized = true;
         return true;
+    }
+
+    private void Update()
+    {
+        if (!m_isInitialized)
+        {
+            enabled = false;
+            Debug.LogError("Trying to update an non-initialized WaterSurfaceMesh.");
+            return;
+        }
+
+        Camera camera = Camera.main;
+
+
     }
 }

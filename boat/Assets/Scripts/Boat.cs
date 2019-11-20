@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Boat : MonoBehaviour
 {
-    [SerializeField] private float m_WaterDensity = 1027.0f;
+    [SerializeField]
+    private float m_WaterDensity = 1027.0f;
+
     //Mesh for debugging
     private Mesh m_Mesh;
     private BoatMesh m_BoatMesh;

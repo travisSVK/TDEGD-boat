@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 243561309}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7, y: -0.2, z: 4.9}
+  m_LocalPosition: {x: 7.7, y: 18.04, z: 4.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2005360233}
@@ -167,7 +167,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 40
   m_CollisionDetection: 0
 --- !u!114 &243561312
 MonoBehaviour:
@@ -276,7 +276,11 @@ MonoBehaviour:
   m_ChunkLength: 20
   m_Width: 10
   m_ChunkCount: 10
-  m_VertexDensity: 1
+  m_Subdivisions: 1
+  m_FloorEdgeMaterial: {fileID: 0}
+  m_FloorSurfaceMaterial: {fileID: 0}
+  m_WaterEdgeMaterial: {fileID: 0}
+  m_WaterSurfaceMaterial: {fileID: 0}
   m_Waves:
   - waveAmplitude: 1.42
     waveVelocity: 0.89
