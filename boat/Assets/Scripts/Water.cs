@@ -116,11 +116,6 @@ public class Water : MonoBehaviour
         return height;
     }
 
-    public void ApplyBuoyancy()
-    {
-
-    }
-
     private void Awake()
     {
         // To avoid division with zero.
