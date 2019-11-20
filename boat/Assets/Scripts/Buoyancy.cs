@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boat : MonoBehaviour
+public class Buoyancy : MonoBehaviour
 {
     private float m_WaterDensity = 1027.0f;
     [SerializeField] private float m_BouyancyCoeficient = 0.004f;

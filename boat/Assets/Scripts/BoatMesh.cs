@@ -36,8 +36,6 @@ public class BoatMesh : MonoBehaviour
         m_Water = FindObjectOfType(typeof(Water)) as Water;
     }
 
-
-
     /*
     * Keep the infor about mesh triangles that reside under water
     * Follows algorithm from this article:
