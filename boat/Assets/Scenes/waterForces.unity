@@ -369,6 +369,8 @@ GameObject:
   - component: {fileID: 889225350}
   - component: {fileID: 889225349}
   - component: {fileID: 889225352}
+  - component: {fileID: 889225353}
+  - component: {fileID: 889225354}
   m_Layer: 8
   m_Name: Boat
   m_TagString: Untagged
@@ -388,10 +390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a336d05739d679e45be9a425ad4f9643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BouyancyCoeficient: 0.07
+  m_BouyancyCoeficient: 0.1
   distanceToSurfaceThreshold: 0.08
   normalThreshold: -0.1
-  m_Mesh: {fileID: -2770742587566215317, guid: 292852e4de58b094ab8072104d8b9b7c, type: 3}
 --- !u!54 &889225350
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -402,7 +403,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 3000
   m_Drag: 0.5
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.3
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -416,7 +417,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889225348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7, y: 16.94, z: 4.9}
+  m_LocalPosition: {x: 7.7, y: 6.71, z: 4.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5006512735681811610}
@@ -436,6 +437,32 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
+  m_Mesh: {fileID: -2770742587566215317, guid: 292852e4de58b094ab8072104d8b9b7c, type: 3}
+--- !u!114 &889225353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889225348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3479a936de67fa4386ad189bf8c7f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Acceleration: 3
+--- !u!114 &889225354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889225348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97f50629b3e80b842b28e17289ed9566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Mesh: {fileID: -2770742587566215317, guid: 292852e4de58b094ab8072104d8b9b7c, type: 3}
 --- !u!1 &963194225
 GameObject:

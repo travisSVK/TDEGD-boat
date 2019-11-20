@@ -8,17 +8,15 @@ public class Boat : MonoBehaviour
     [SerializeField] private float m_BouyancyCoeficient = 0.004f;
     [SerializeField] private float distanceToSurfaceThreshold = 0.1f;
     [SerializeField] private float normalThreshold = 0.0f;
-    [SerializeField] private Mesh m_Mesh = null;
+    
     private BoatMesh m_BoatMesh;
     private Rigidbody m_RigidBody;
-    private Water m_Water;
     private bool m_StartPositionSet = false;
 
     private void Start()
     {
-        m_RigidBody = gameObject.GetComponent<Rigidbody>();
-        m_BoatMesh = new BoatMesh(gameObject, m_Mesh);
-        m_Water = FindObjectOfType(typeof(Water)) as Water;
+        m_RigidBody = GetComponent(typeof(Rigidbody)) as Rigidbody;
+        m_BoatMesh = GetComponent(typeof(BoatMesh)) as BoatMesh;
     }
 
     private void Update()
@@ -28,7 +26,6 @@ public class Boat : MonoBehaviour
 
     private void FixedUpdate()
     {
-        m_BoatMesh.GenerateUnderwaterMesh(m_Water);
         if (m_BoatMesh.underWaterTriangles.Count > 0)
         {
             // Get all triangles
@@ -52,8 +49,6 @@ public class Boat : MonoBehaviour
 
     private Vector3 CalculateBuoyancy(float waterDensity, Triangle triangle)
     {
-        //Buoyancy is a hydrostatic force - it's there even if the water isn't flowing or if the boat stays still
-
         // F_buoyancy = rho * g * V
         // rho - density of the liquid(kg/m3)
         // g - gravitational acceleration(9.80 m/s2)

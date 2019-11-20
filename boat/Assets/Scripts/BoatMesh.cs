@@ -2,15 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoatMesh
+public class BoatMesh : MonoBehaviour
 {
-    
-    private Transform m_BoatTransform;
+    [SerializeField] private Mesh m_Mesh = null;
     private Vector3[] m_BoatVertices;
     private int[] m_BoatIndices;
     private List<Triangle> m_UnderWaterTriangles = new List<Triangle>();
     private Vector3[] m_BoatVerticesGlobal;
     private float[] m_WaterDistances;
+    private Water m_Water;
 
     public List<Triangle> underWaterTriangles
     {
@@ -27,24 +27,26 @@ public class BoatMesh
         public Vector3 globalVertexPos;
     }
 
-    public BoatMesh(GameObject boatObject, Mesh mesh)
+    private void Start()
     {
-        m_BoatTransform = boatObject.transform;
-        m_BoatVertices = mesh.vertices;
-        m_BoatIndices = mesh.triangles;
+        m_BoatVertices = m_Mesh.vertices;
+        m_BoatIndices = m_Mesh.triangles;
         m_BoatVerticesGlobal = new Vector3[m_BoatVertices.Length];
         m_WaterDistances = new float[m_BoatVertices.Length];
+        m_Water = FindObjectOfType(typeof(Water)) as Water;
     }
+
+
 
     /*
     * Keep the infor about mesh triangles that reside under water
     * Follows algorithm from this article:
     * https://www.gamasutra.com/view/news/237528/Water_interaction_model_for_boats_in_video_games.php
     */
-    public void GenerateUnderwaterMesh(Water water)
+    private void FixedUpdate()
     {
         m_UnderWaterTriangles.Clear();
-        PrepareForGeneration(water);
+        PrepareForGeneration();
         List<VertexData> vertexData = new List<VertexData>();
         vertexData.Add(new VertexData());
         vertexData.Add(new VertexData());
@@ -72,7 +74,7 @@ public class BoatMesh
                 Vector3 p3 = vertexData[2].globalVertexPos;
 
                 //Save the triangle
-                m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, water));
+                m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, m_Water));
                 continue;
             }
 
@@ -80,11 +82,11 @@ public class BoatMesh
 
             if (aboveWater == 1)
             {
-                AddTrianglesOneAboveWater(vertexData, water);
+                AddTrianglesOneAboveWater(vertexData);
             }
             else if (aboveWater == 2)
             {
-                AddTrianglesTwoAboveWater(vertexData, water);
+                AddTrianglesTwoAboveWater(vertexData);
             }
         }
     }
@@ -92,7 +94,7 @@ public class BoatMesh
     /*
     * Add triangles with one vertex above water surface.
     */
-    private void AddTrianglesOneAboveWater(List<VertexData> vertexData, Water water)
+    private void AddTrianglesOneAboveWater(List<VertexData> vertexData)
     {
         //H is always at position 0 (see GetNumberAboveWater method description)
         Vector3 H = vertexData[0].globalVertexPos;
@@ -147,14 +149,14 @@ public class BoatMesh
         Vector3 I_L = LI_L + L;
         
         // add 2 triangles
-        m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, water));
-        m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, water));
+        m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, m_Water));
+        m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, m_Water));
     }
 
     /*
     * Add triangles with two vertices above water surface.
     */
-    private void AddTrianglesTwoAboveWater(List<VertexData> vertexData, Water water)
+    private void AddTrianglesTwoAboveWater(List<VertexData> vertexData)
     {
         // L is always the last 
         Vector3 L = vertexData[2].globalVertexPos;
@@ -212,7 +214,7 @@ public class BoatMesh
         Vector3 J_H = LJ_H + L;
         
         //1 triangle below the water
-        m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, water));
+        m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, m_Water));
     }
 
     /*
@@ -264,13 +266,13 @@ public class BoatMesh
     * Generate global positions and water surface distances beforehand, because
     * some vertices are shared (decreasing number of computations)
     */
-    private void PrepareForGeneration(Water water)
+    private void PrepareForGeneration()
     {
         for (int i = 0; i < m_BoatVertices.Length; i++)
         {
-            Vector3 globalPosition = m_BoatTransform.TransformPoint(m_BoatVertices[i]);
+            Vector3 globalPosition = transform.TransformPoint(m_BoatVertices[i]);
             m_BoatVerticesGlobal[i] = globalPosition;
-            float waterHeight = water.GetHeight(globalPosition.x, globalPosition.z);
+            float waterHeight = m_Water.GetHeight(globalPosition.x, globalPosition.z);
             // positive -> above water and vice versa
             m_WaterDistances[i] = globalPosition.y - waterHeight;
         }
