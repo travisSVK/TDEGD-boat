@@ -8,7 +8,7 @@ public class WaterEdgeMesh : MonoBehaviour
 
     private MeshGenerator m_MeshGenerator = null;
 
-    private bool m_isInitialized = false;
+    private bool m_IsInitialized = false;
 
     public bool Initialize(Water water)
     {
@@ -27,13 +27,13 @@ public class WaterEdgeMesh : MonoBehaviour
 
         m_MeshGenerator.SetMaterial(m_Water.waterEdgeMaterial);
 
-        m_isInitialized = true;
+        m_IsInitialized = true;
         return true;
     }
 
     private void Update()
     {
-        if (!m_isInitialized)
+        if (!m_IsInitialized)
         {
             enabled = false;
             Debug.LogError("Trying to update an non-initialized WaterEdgeMesh.");

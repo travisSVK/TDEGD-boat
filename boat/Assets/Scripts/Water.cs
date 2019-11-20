@@ -116,6 +116,11 @@ public class Water : MonoBehaviour
         return height;
     }
 
+    public bool IsUnderwater(Vector3 point)
+    {
+        return GetHeight(point.x, point.z) > point.y;
+    }
+
     private void Awake()
     {
         // To avoid division with zero.
