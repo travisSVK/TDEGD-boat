@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoatMesh : MonoBehaviour
+public class BoatMesh
 {
+    
     private Transform m_BoatTransform;
     private Vector3[] m_BoatVertices;
     private int[] m_BoatIndices;
@@ -26,15 +27,11 @@ public class BoatMesh : MonoBehaviour
         public Vector3 globalVertexPos;
     }
 
-    public BoatMesh(GameObject boatObject)
+    public BoatMesh(GameObject boatObject, Mesh mesh)
     {
         m_BoatTransform = boatObject.transform;
-        MeshFilter mf = boatObject.GetComponentInChildren(typeof(MeshFilter)) as MeshFilter;
-        if (mf)
-        {
-            m_BoatVertices = mf.mesh.vertices;
-            m_BoatIndices = mf.mesh.triangles;
-        }
+        m_BoatVertices = mesh.vertices;
+        m_BoatIndices = mesh.triangles;
         m_BoatVerticesGlobal = new Vector3[m_BoatVertices.Length];
         m_WaterDistances = new float[m_BoatVertices.Length];
     }

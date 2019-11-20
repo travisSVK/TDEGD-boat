@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Boat : MonoBehaviour
 {
-    [SerializeField]
     private float m_WaterDensity = 1027.0f;
-
-    //Mesh for debugging
-    private Mesh m_Mesh;
+    [SerializeField] private float m_BouyancyCoeficient = 0.004f;
+    [SerializeField] private float distanceToSurfaceThreshold = 0.1f;
+    [SerializeField] private float normalThreshold = 0.0f;
+    [SerializeField] private Mesh m_Mesh = null;
     private BoatMesh m_BoatMesh;
     private Rigidbody m_RigidBody;
     private Water m_Water;
@@ -17,9 +17,8 @@ public class Boat : MonoBehaviour
     private void Start()
     {
         m_RigidBody = gameObject.GetComponent<Rigidbody>();
-        m_BoatMesh = new BoatMesh(gameObject);
+        m_BoatMesh = new BoatMesh(gameObject, m_Mesh);
         m_Water = FindObjectOfType(typeof(Water)) as Water;
-        
     }
 
     private void Update()
@@ -29,11 +28,11 @@ public class Boat : MonoBehaviour
             transform.position = new Vector3(transform.position.x, m_Water.GetHeight(transform.position.x, transform.position.z), transform.position.z);
             m_StartPositionSet = true;
         }
-        m_BoatMesh.GenerateUnderwaterMesh(m_Water);
     }
 
     private void FixedUpdate()
     {
+        m_BoatMesh.GenerateUnderwaterMesh(m_Water);
         if (m_BoatMesh.underWaterTriangles.Count > 0)
         {
             // Get all triangles
@@ -45,12 +44,12 @@ public class Boat : MonoBehaviour
 
                 // Add the force to the boat
                 m_RigidBody.AddForceAtPosition(buoyancyForce, triangle.center);
-                
+
                 // debug Normal
                 //Debug.DrawRay(triangle.center, triangle.normal * 3f, Color.white);
 
                 // debug buoyancy
-                Debug.DrawRay(triangle.center, buoyancyForce.normalized * -3f, Color.blue);
+                Debug.DrawRay(triangle.center, buoyancyForce * 0.001f, Color.blue);
             }
         }
     }
@@ -68,8 +67,13 @@ public class Boat : MonoBehaviour
         // h - distance to surface
         // S - surface area
         // n - normal to the surface
-        Vector3 buoyancyForce = waterDensity * Physics.gravity.y * triangle.distanceToSurface * triangle.area * triangle.normal * 0.00046f;
-        //(triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * 0.01f;
+        Vector3 buoyancyForce = 
+            waterDensity * 
+            Physics.gravity.y * 
+            (triangle.distanceToSurface <= distanceToSurfaceThreshold ? 0.0f : triangle.distanceToSurface) * 
+            triangle.area * 
+            //triangle.normal * m_BouyancyCoeficient;
+            (triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * m_BouyancyCoeficient;
 
         //The vertical component of the hydrostatic forces don't cancel out but the horizontal do
         buoyancyForce.x = 0f;
