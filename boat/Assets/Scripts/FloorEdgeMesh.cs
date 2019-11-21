@@ -5,6 +5,11 @@ public class FloorEdgeMesh : MonoBehaviour
     private Water m_Water;
     private MeshGenerator m_MeshGenerator = null;
 
+    /// <summary>
+    /// Initialize the floor edge component.
+    /// </summary>
+    /// <param name="water">Water.</param>
+    /// <returns></returns>
     public bool Initialize(Water water)
     {
         m_Water = water;
