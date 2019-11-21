@@ -14,18 +14,31 @@ public class BoatEngine : MonoBehaviour
 
     public void Accelerate(float value)
     {
-        if (Mathf.Approximately(value, 0.0f))
+        if (value > 0.1f)
         {
-            m_CurrentPower = 0.0f;
+            m_CurrentPower += m_PowerFactor * value * Time.deltaTime;
+        }
+        else if (value < -0.1f)
+        {
+            m_CurrentPower += m_PowerFactor * value * 0.2f * Time.deltaTime;
         }
         else
         {
-            float currentSpeed = m_Rigidbody.velocity.magnitude;
-            if (currentSpeed < 50f && m_CurrentPower < m_MaxPower)
+            if (Mathf.Approximately(m_CurrentPower, 0.0f))
             {
-                m_CurrentPower += value * m_PowerFactor * Time.deltaTime;
+                m_CurrentPower = 0.0f;
+            }
+            else if (m_CurrentPower > 0.0f)
+            {
+                m_CurrentPower -= m_PowerFactor * Time.deltaTime;
+            }
+            else
+            {
+                m_CurrentPower += m_PowerFactor * Time.deltaTime;
             }
         }
+
+        m_CurrentPower = Mathf.Clamp(m_CurrentPower, -m_PowerFactor * 0.2f, m_MaxPower);
     }
 
     private void Awake()
@@ -38,7 +51,6 @@ public class BoatEngine : MonoBehaviour
     {
         if (m_Water.IsUnderwater(m_ForcePoint.position))
         {
-            Debug.Log(m_CurrentPower);
             Vector3 force = m_ForcePoint.right * m_CurrentPower;
             m_Rigidbody.AddForceAtPosition(force, m_ForcePoint.position);
         }

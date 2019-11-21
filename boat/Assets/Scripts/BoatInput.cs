@@ -15,6 +15,7 @@ public class BoatInput : MonoBehaviour
 
     private void Update()
     {
-        m_BoatEngine.Accelerate(Input.GetAxis(m_AccelerationAxisName));
+        float input = Input.GetAxis(m_AccelerationAxisName);
+        m_BoatEngine.Accelerate(input);
     }
 }
