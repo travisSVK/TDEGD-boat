@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class BuoyancyMesh : MonoBehaviour
 {
     [SerializeField] private Mesh m_Mesh = null;
+    private Rigidbody m_RigidBody;
 
     private Vector3[] m_BoatVertices = null;
     private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
@@ -47,6 +48,13 @@ public class BuoyancyMesh : MonoBehaviour
         m_BoatVerticesGlobal = new Vector3[m_BoatVertices.Length];
         m_WaterDistances = new float[m_BoatVertices.Length];
         m_Water = FindObjectOfType(typeof(Water)) as Water;
+        m_RigidBody = GetComponent(typeof(Rigidbody)) as Rigidbody;
+    }
+
+    public float GetLength()
+    {
+        // length is in the x direction
+        return m_Mesh.bounds.size.x;
     }
 
     /*
@@ -85,7 +93,7 @@ public class BuoyancyMesh : MonoBehaviour
                 Vector3 p3 = vertexData[2].globalVertexPos;
 
                 // Save the triangle.
-                m_UnderwaterTriangles.Add(new Triangle(p1, p2, p3, m_Water));
+                m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, m_RigidBody, m_Water));
                 continue;
             }
 
@@ -160,8 +168,8 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 I_L = LI_L + L;
         
         // add 2 triangles
-        m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_Water));
-        m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_Water));
+        m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
+        m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
     }
 
     /*
@@ -225,7 +233,7 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 J_H = LJ_H + L;
         
         //1 triangle below the water
-        m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_Water));
+        m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
     }
 
     /*

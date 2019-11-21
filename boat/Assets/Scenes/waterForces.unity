@@ -390,8 +390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a336d05739d679e45be9a425ad4f9643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BouyancyCoeficient: 0.1
-  distanceToSurfaceThreshold: 0.08
+  m_BuoyancyCoeficient: 0.1
+  m_DistanceToSurfaceThreshold: 0.1
   normalThreshold: -0.1
 --- !u!54 &889225350
 Rigidbody:
