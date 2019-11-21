@@ -20,7 +20,7 @@ public class BoatPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float Cf = Math.ResistanceCoefficient(m_WaterDensity, m_RigidBody.velocity.magnitude, m_BuoyancyMesh.GetLength());
+        float Cf = WaterMath.ResistanceCoefficient(m_WaterDensity, m_RigidBody.velocity.magnitude, m_BuoyancyMesh.GetLength());
         if (m_BuoyancyMesh.underwaterTriangles.Count > 0)
         {
             // Get all triangles
@@ -28,9 +28,9 @@ public class BoatPhysics : MonoBehaviour
 
             foreach (Triangle triangle in underWaterTriangles)
             {
-                Vector3 appliedForce = Math.CalculateBuoyancy(triangle, m_WaterDensity, m_DistanceToSurfaceThreshold, m_BuoyancyCoeficient);
+                Vector3 appliedForce = WaterMath.CalculateBuoyancy(triangle, m_WaterDensity, m_DistanceToSurfaceThreshold, m_BuoyancyCoeficient);
 
-                Vector3 resistance = Math.CalculateViscousWaterResistance(m_WaterDensity, triangle, Cf);
+                Vector3 resistance = WaterMath.CalculateViscousWaterResistance(m_WaterDensity, triangle, Cf);
                 appliedForce += resistance;
 
                 // Add forces to boat
