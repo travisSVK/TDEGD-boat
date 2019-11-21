@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class BuoyancyMesh : MonoBehaviour
 {
     [SerializeField] private Mesh m_Mesh = null;
-    private Rigidbody m_RigidBody;
+<<<<<<< HEAD:boat/Assets/Scripts/BuoyancyMesh.cs
 
     private Vector3[] m_BoatVertices = null;
     private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
@@ -22,6 +22,17 @@ public class BuoyancyMesh : MonoBehaviour
     }
 
     public List<Triangle> underwaterTriangles
+=======
+    private Rigidbody m_RigidBody;
+    private Vector3[] m_BoatVertices;
+    private int[] m_BoatIndices;
+    private List<Triangle> m_UnderWaterTriangles = new List<Triangle>();
+    private Vector3[] m_BoatVerticesGlobal;
+    private float[] m_WaterDistances;
+    private Water m_Water;
+
+    public List<Triangle> underWaterTriangles
+>>>>>>> Added water viscous resistance force. Changed scripts structure to update all underwater vertices only once per fixed update.:boat/Assets/Scripts/BoatMesh.cs
     {
         get 
         {
@@ -92,8 +103,13 @@ public class BuoyancyMesh : MonoBehaviour
                 Vector3 p2 = vertexData[1].globalVertexPos;
                 Vector3 p3 = vertexData[2].globalVertexPos;
 
+<<<<<<< HEAD:boat/Assets/Scripts/BuoyancyMesh.cs
                 // Save the triangle.
+                m_UnderwaterTriangles.Add(new Triangle(p1, p2, p3, m_Water));
+=======
+                //Save the triangle
                 m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, m_RigidBody, m_Water));
+>>>>>>> Added water viscous resistance force. Changed scripts structure to update all underwater vertices only once per fixed update.:boat/Assets/Scripts/BoatMesh.cs
                 continue;
             }
 
@@ -168,8 +184,13 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 I_L = LI_L + L;
         
         // add 2 triangles
+<<<<<<< HEAD:boat/Assets/Scripts/BuoyancyMesh.cs
+        m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_Water));
+=======
         m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
         m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
+>>>>>>> Added water viscous resistance force. Changed scripts structure to update all underwater vertices only once per fixed update.:boat/Assets/Scripts/BoatMesh.cs
     }
 
     /*
@@ -233,7 +254,11 @@ public class BuoyancyMesh : MonoBehaviour
         Vector3 J_H = LJ_H + L;
         
         //1 triangle below the water
+<<<<<<< HEAD:boat/Assets/Scripts/BuoyancyMesh.cs
+        m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_Water));
+=======
         m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
+>>>>>>> Added water viscous resistance force. Changed scripts structure to update all underwater vertices only once per fixed update.:boat/Assets/Scripts/BoatMesh.cs
     }
 
     /*
