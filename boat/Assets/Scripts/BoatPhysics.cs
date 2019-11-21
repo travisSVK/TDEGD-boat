@@ -9,22 +9,22 @@ public class BoatPhysics : MonoBehaviour
     [SerializeField] private float m_DistanceToSurfaceThreshold = 0.1f;
     [SerializeField] private float normalThreshold = 0.0f;
     
-    private BoatMesh m_BoatMesh;
+    private BuoyancyMesh m_BuoyancyMesh;
     private Rigidbody m_RigidBody;
 
     private void Start()
     {
         m_RigidBody = GetComponent(typeof(Rigidbody)) as Rigidbody;
-        m_BoatMesh = GetComponent(typeof(BoatMesh)) as BoatMesh;
+        m_BuoyancyMesh = GetComponent(typeof(BuoyancyMesh)) as BuoyancyMesh;
     }
 
     private void FixedUpdate()
     {
-        float Cf = Math.ResistanceCoefficient(m_WaterDensity, m_RigidBody.velocity.magnitude, m_BoatMesh.GetLength());
-        if (m_BoatMesh.underWaterTriangles.Count > 0)
+        float Cf = Math.ResistanceCoefficient(m_WaterDensity, m_RigidBody.velocity.magnitude, m_BuoyancyMesh.GetLength());
+        if (m_BuoyancyMesh.underwaterTriangles.Count > 0)
         {
             // Get all triangles
-            List<Triangle> underWaterTriangles = m_BoatMesh.underWaterTriangles;
+            List<Triangle> underWaterTriangles = m_BuoyancyMesh.underwaterTriangles;
 
             foreach (Triangle triangle in underWaterTriangles)
             {

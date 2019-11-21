@@ -93,7 +93,7 @@ public class BuoyancyMesh : MonoBehaviour
                 Vector3 p3 = vertexData[2].globalVertexPos;
 
                 // Save the triangle.
-                m_UnderWaterTriangles.Add(new Triangle(p1, p2, p3, m_RigidBody, m_Water));
+                m_UnderwaterTriangles.Add(new Triangle(p1, p2, p3, m_RigidBody, m_Water));
                 continue;
             }
 
@@ -166,10 +166,10 @@ public class BuoyancyMesh : MonoBehaviour
         float t_L = -h_L / (h_H - h_L);
         Vector3 LI_L = t_L * LH;
         Vector3 I_L = LI_L + L;
-        
+
         // add 2 triangles
-        m_UnderWaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
-        m_UnderWaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
     }
 
     /*
@@ -231,9 +231,9 @@ public class BuoyancyMesh : MonoBehaviour
         float t_H = -h_L / (h_H - h_L);
         Vector3 LJ_H = t_H * LH;
         Vector3 J_H = LJ_H + L;
-        
+
         //1 triangle below the water
-        m_UnderWaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
+        m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
     }
 
     /*
