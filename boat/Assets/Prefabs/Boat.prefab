@@ -2201,7 +2201,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2254,7 +2254,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2304,7 +2304,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
     randomizePerFrame: 0
   ExternalForcesModule:
     serializedVersion: 2
@@ -6972,7 +6972,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -7025,7 +7025,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -7075,7 +7075,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
     randomizePerFrame: 0
   ExternalForcesModule:
     serializedVersion: 2
@@ -9816,7 +9816,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 3000
   m_Drag: 0.5
-  m_AngularDrag: 0.3
+  m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -9863,7 +9863,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BuoyancyCoeficient: 0.1
   m_DistanceToSurfaceThreshold: 0.1
-  normalThreshold: 0
+  m_NormalThreshold: 0
+  m_Cpd1: 1
+  m_Cpd2: 1
+  m_Cps1: 1
+  m_Cps2: 1
+  m_Fp: 1
+  m_Fs: 1
 --- !u!114 &1267711911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9892,8 +9898,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ForcePoint: {fileID: 2974238580438841666}
-  m_PowerFactor: 1
-  m_MaxPower: 10
+  m_PowerFactor: 5000
+  m_MaxPower: 15000
 --- !u!114 &1871723536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9907,6 +9913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AccelerationAxisName: Horizontal
+  m_ThrustZeroClampThreshold: 0.04
 --- !u!1 &5056169628903979192
 GameObject:
   m_ObjectHideFlags: 0
@@ -10462,7 +10469,7 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.21
   m_Range: 2.63
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

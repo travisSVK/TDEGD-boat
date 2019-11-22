@@ -303,8 +303,9 @@ GameObject:
   - component: {fileID: 536199087}
   - component: {fileID: 536199089}
   - component: {fileID: 536199088}
+  - component: {fileID: 536199090}
   m_Layer: 5
-  m_Name: GameObject (2)
+  m_Name: Propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,7 +327,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99.13574, y: 0.6788025}
+  m_AnchoredPosition: {x: -100, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.54320353, y: 0.5339398}
 --- !u!114 &536199088
@@ -365,6 +366,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536199086}
   m_CullTransparentMesh: 0
+--- !u!114 &536199090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536199086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf52430cb24c2234e98161f54e9345c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Axis: {x: 0, y: 0, z: 1}
+  m_Rotation: -180
+  m_Scale: 0
 --- !u!1 &564902103
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 699971238}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: MinPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -674,7 +690,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.2901961, g: 0.29411766, b: 0.3019608, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -960,6 +976,7 @@ MonoBehaviour:
   m_Knob: {fileID: 1956488645}
   m_MinPoint: {fileID: 699971238}
   m_MaxPoint: {fileID: 1628928443}
+  m_Rotator: {fileID: 536199090}
 --- !u!1 &1395132665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1085,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1628928443}
   m_Layer: 5
-  m_Name: GameObject (1)
+  m_Name: MaxPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1093,6 +1110,36 @@ RectTransform:
   m_AnchoredPosition: {x: 75, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1790043525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1790043526}
+  m_Layer: 4
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1790043526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790043525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.404515, y: -1.1824381, z: 5.6266117}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1810134522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,51 +1500,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4184205147530723196, guid: 09f85bf460314a64a8798590af2b55c3,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 0.21
-      objectReference: {fileID: 0}
     - target: {fileID: 798148501, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.inWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 798148501, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.y.scalar
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 798148501, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.z.scalar
-      value: 0
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1237525195, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.inWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1237525195, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.y.scalar
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1237525195, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: ForceModule.z.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1734802218649104998, guid: 09f85bf460314a64a8798590af2b55c3,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_PowerFactor
-      value: 5000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_MaxPower
-      value: 15000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723536, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_ThrustZeroClampThreshold
-      value: 0.04
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
