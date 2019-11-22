@@ -8,6 +8,7 @@ public class BuoyancyMesh : MonoBehaviour
 
     private Vector3[] m_BoatVertices = null;
     private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
+    private List<Triangle> m_AbovewaterTriangles = new List<Triangle>();
     private Vector3[] m_BoatVerticesGlobal = null;
     private int[] m_BoatIndices = null;
     private float[] m_WaterDistances = null;
@@ -26,6 +27,14 @@ public class BuoyancyMesh : MonoBehaviour
         get 
         {
             return m_UnderwaterTriangles;
+        }
+    }
+
+    public List<Triangle> abovewaterTriangles
+    {
+        get
+        {
+            return m_AbovewaterTriangles;
         }
     }
 
@@ -64,6 +73,7 @@ public class BuoyancyMesh : MonoBehaviour
      */
     private void FixedUpdate()
     {
+        m_AbovewaterTriangles.Clear();
         m_UnderwaterTriangles.Clear();
         PrepareForGeneration();
         List<VertexData> vertexData = new List<VertexData>();
@@ -83,17 +93,15 @@ public class BuoyancyMesh : MonoBehaviour
 
             if (vertexData[0].distance > 0.0f && vertexData[1].distance > 0.0f && vertexData[2].distance > 0.0f)
             {
+                m_AbovewaterTriangles.Add(
+                    new Triangle(vertexData[0].globalVertexPos, vertexData[1].globalVertexPos, vertexData[2].globalVertexPos, m_RigidBody, m_Water));
                 continue;
             }
 
             if (vertexData[0].distance < 0.0f && vertexData[1].distance < 0.0f && vertexData[2].distance < 0.0f)
             {
-                Vector3 p1 = vertexData[0].globalVertexPos;
-                Vector3 p2 = vertexData[1].globalVertexPos;
-                Vector3 p3 = vertexData[2].globalVertexPos;
-
-                // Save the triangle.
-                m_UnderwaterTriangles.Add(new Triangle(p1, p2, p3, m_RigidBody, m_Water));
+                m_UnderwaterTriangles.Add(
+                    new Triangle(vertexData[0].globalVertexPos, vertexData[1].globalVertexPos, vertexData[2].globalVertexPos, m_RigidBody, m_Water));
                 continue;
             }
 
@@ -101,11 +109,11 @@ public class BuoyancyMesh : MonoBehaviour
 
             if (aboveWater == 1)
             {
-                AddTrianglesOneAboveWater(vertexData);
+                VertexAbove(vertexData);
             }
             else if (aboveWater == 2)
             {
-                AddTrianglesTwoAboveWater(vertexData);
+                TwoVerticesAbove(vertexData);
             }
         }
     }
@@ -113,7 +121,7 @@ public class BuoyancyMesh : MonoBehaviour
     /*
      * Add triangles with one vertex above water surface.
      */
-    private void AddTrianglesOneAboveWater(List<VertexData> vertexData)
+    private void VertexAbove(List<VertexData> vertexData)
     {
         //H is always at position 0 (see GetNumberAboveWater method description)
         Vector3 H = vertexData[0].globalVertexPos;
@@ -170,12 +178,13 @@ public class BuoyancyMesh : MonoBehaviour
         // add 2 triangles
         m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
         m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
+        m_AbovewaterTriangles.Add(new Triangle(I_M, H, I_L, m_RigidBody, m_Water));
     }
 
     /*
      * Add triangles with two vertices above water surface.
      */
-    private void AddTrianglesTwoAboveWater(List<VertexData> vertexData)
+    private void TwoVerticesAbove(List<VertexData> vertexData)
     {
         // L is always the last 
         Vector3 L = vertexData[2].globalVertexPos;
@@ -234,6 +243,8 @@ public class BuoyancyMesh : MonoBehaviour
 
         //1 triangle below the water
         m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
+        m_AbovewaterTriangles.Add(new Triangle(J_H, H, J_M, m_RigidBody, m_Water));
+        m_AbovewaterTriangles.Add(new Triangle(J_M, H, M, m_RigidBody, m_Water));
     }
 
     /*

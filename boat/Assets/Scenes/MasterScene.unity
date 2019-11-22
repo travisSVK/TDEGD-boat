@@ -1453,6 +1453,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
+      propertyPath: m_PowerFactor
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
+      propertyPath: m_MaxPower
+      value: 15000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734802218649104998, guid: 09f85bf460314a64a8798590af2b55c3,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734802218649104998, guid: 09f85bf460314a64a8798590af2b55c3,
+        type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103798825, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
+      propertyPath: m_AirDragCoeficient
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1871723536, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
+      propertyPath: m_ThrustZeroClampThreshold
+      value: 0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 4184205147530723196, guid: 09f85bf460314a64a8798590af2b55c3,
         type: 3}
       propertyPath: m_Intensity
@@ -1481,23 +1507,6 @@ PrefabInstance:
     - target: {fileID: 1237525195, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
       propertyPath: ForceModule.z.scalar
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1734802218649104998, guid: 09f85bf460314a64a8798590af2b55c3,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_PowerFactor
-      value: 5000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723528, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_MaxPower
-      value: 15000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871723536, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_ThrustZeroClampThreshold
-      value: 0.04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
