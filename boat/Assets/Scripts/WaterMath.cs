@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class WaterMath
 {
+    /*
+    * Water resistance coeficient
+    * https://gamasutra.com/view/news/263237/Water_interaction_model_for_boats_in_video_games_Part_2.php
+    */
     public static float ResistanceCoefficient(float rho, float velocity, float length)
     {
         // Cf(Rn) = 0.0075 / (log10(Rn) - 2)^2
@@ -24,7 +28,11 @@ public static class WaterMath
         return Cf;
     }
 
-    public static Vector3 CalculateBuoyancy(Triangle triangle, float waterDensity, float distanceToSurfaceThreshold, float buoyancyCoeficient)
+    /*
+    * Buoyancy force
+    * https://gamasutra.com/view/news/263237/Water_interaction_model_for_boats_in_video_games_Part_2.php
+    */
+    public static Vector3 CalculateBuoyancy(Triangle triangle, float waterDensity, float distanceToSurfaceThreshold, float normalThreshold, float buoyancyCoeficient)
     {
         // F_buoyancy = rho * g * V.
         // rho - density of the liquid(kg/m3).
@@ -41,7 +49,7 @@ public static class WaterMath
             (triangle.distanceToSurface <= distanceToSurfaceThreshold ? 0.0f : triangle.distanceToSurface) *
             triangle.area *
             //triangle.normal * m_BouyancyCoeficient;
-            (triangle.normal.y <= 0.0f ? triangle.normal : Vector3.zero) * buoyancyCoeficient;
+            (triangle.normal.y <= normalThreshold ? triangle.normal : Vector3.zero) * buoyancyCoeficient;
 
         //The vertical component of the hydrostatic forces don't cancel out but the horizontal do
         buoyancyForce.x = 0f;
@@ -50,6 +58,10 @@ public static class WaterMath
         return buoyancyForce;
     }
 
+    /*
+    * Viscous water resistance, ie. water draged along the surface of the boat (tangential forces)
+    * https://gamasutra.com/view/news/263237/Water_interaction_model_for_boats_in_video_games_Part_2.php
+    */
     public static Vector3 CalculateViscousWaterResistance(float waterDensity, Triangle triangle, float Cf)
     {
         // F = 1/2 * rho * Cf * v * S.
@@ -73,4 +85,33 @@ public static class WaterMath
         // The final resistance force.
         return 0.5f * waterDensity * waterFlowVelocity.magnitude * waterFlowVelocity * triangle.area * Cf;
     }
+
+    /*
+    * This is unrealistic force, made up to simulate the wave breaking, spray making resistances, etc.
+    * It is applied depending on the triangle normal (as opposed to viscous drag) of the underwater triangles
+    * and boat velocity. Modifies the boat turning behaviour depending on speed.
+    * https://gamasutra.com/view/news/263237/Water_interaction_model_for_boats_in_video_games_Part_2.php
+    */
+    public static Vector3 CalculatePressureDrag(Triangle triangle, float Cpd1, float Cpd2, float Csd1, float Csd2, float fp, float fs)
+    {
+        // Formula:
+        // F = -(Cpd1 * (vi/vr) + Cpd2 * (vi/vr)^2) * Si * (dot(normal.normalized, velocity.normalized))^fp * normal,
+        // if cosine between veocity and normal is positive (pressure)
+        // where Cpd1: linear pressure drag coeficient; vi/vr: speed at triangle center / reference speed == 1;
+        // Cpd2: quadratic pressure drag coeficient; Si: triangle area; fp: pressure falloff power (how fast the drag falls off
+        // depending on cosine between velocity and normal)
+        //
+        // F = (Csd1 * (vi/vr) + Csd2 * (vi/vr)^2) * Si * (dot(normal.normalized, velocity.normalized))^fs * normal,
+        // if cosine between veocity and normal is negative (suction)
+        // where Csd1 and Csd2: linear and quadratic suction drag coeficients; fs: suction falloff power
+
+        float normalVelocityCos = Vector3.Dot(triangle.normal, triangle.velocity.normalized); 
+        if (normalVelocityCos > 0.0f)
+        { 
+            return -(Cpd1 + Cpd2) * triangle.area * Mathf.Pow(normalVelocityCos, fp) * triangle.normal;
+        }
+        // normalVelocityCos needs to be absolute value here cause the force will apply in the other direction
+        return (Csd1 + Csd2) * triangle.area * Mathf.Pow(Mathf.Abs(normalVelocityCos), fs) * triangle.normal;
+    }
+
 }
