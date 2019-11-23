@@ -5,40 +5,26 @@ using UnityEngine;
 public class BoatEngine : MonoBehaviour
 {
     [SerializeField] private Transform m_ForcePoint = null;
-    [SerializeField] private float m_PowerFactor = 1.0f;
+    [SerializeField] private Transform m_propeller = null;
+    [SerializeField] private AudioSource m_EngineSoundSource = null;
     [SerializeField] private float m_MaxPower = 10.0f;
 
-    private float m_CurrentPower = 0.0f;
+    private float m_Thrust = 0.0f;
     private Rigidbody m_Rigidbody = null;
     private Water m_Water = null;
 
-    public void Accelerate(float value)
+    public float thrust
     {
-        if (value > 0.1f)
+        get
         {
-            m_CurrentPower += m_PowerFactor * value * Time.deltaTime;
-        }
-        else if (value < -0.1f)
-        {
-            m_CurrentPower += m_PowerFactor * value * 0.2f * Time.deltaTime;
-        }
-        else
-        {
-            if (Mathf.Approximately(m_CurrentPower, 0.0f))
-            {
-                m_CurrentPower = 0.0f;
-            }
-            else if (m_CurrentPower > 0.0f)
-            {
-                m_CurrentPower -= m_PowerFactor * Time.deltaTime;
-            }
-            else
-            {
-                m_CurrentPower += m_PowerFactor * Time.deltaTime;
-            }
+            return m_Thrust;
         }
 
-        m_CurrentPower = Mathf.Clamp(m_CurrentPower, -m_PowerFactor * 0.2f, m_MaxPower);
+        set
+        {
+            m_Thrust = value;
+            m_EngineSoundSource.pitch = 1.0f + Mathf.Abs(m_Thrust);
+        }
     }
 
     private void Awake()
@@ -51,7 +37,7 @@ public class BoatEngine : MonoBehaviour
     {
         if (m_Water.IsUnderwater(m_ForcePoint.position))
         {
-            Vector3 force = m_ForcePoint.right * m_CurrentPower;
+            Vector3 force = m_ForcePoint.right * m_MaxPower * m_Thrust;
             m_Rigidbody.AddForceAtPosition(force, m_ForcePoint.position);
         }
     }

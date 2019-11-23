@@ -38,6 +38,6 @@ public class BoatInput : MonoBehaviour
             m_LevelUI.progress = m_ClampedThrust;
         }
 
-        m_BoatEngine.Accelerate(input);
+        m_BoatEngine.thrust = m_ClampedThrust;
     }
 }

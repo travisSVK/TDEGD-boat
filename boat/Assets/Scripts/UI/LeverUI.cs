@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class LeverUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform m_Knob;
-    [SerializeField] private RectTransform m_MinPoint;
-    [SerializeField] private RectTransform m_MaxPoint;
-    [SerializeField] private RotatorUI m_Rotator;
+    [SerializeField] private RectTransform m_Knob = null;
+    [SerializeField] private RectTransform m_MinPoint = null;
+    [SerializeField] private RectTransform m_MaxPoint = null;
+    [SerializeField] private RotatorUI m_Rotator = null;
 
     private float m_Progress = 0.0f;
 
