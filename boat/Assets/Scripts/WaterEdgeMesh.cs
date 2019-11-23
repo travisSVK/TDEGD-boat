@@ -22,6 +22,7 @@ public class WaterEdgeMesh : MonoBehaviour
         }
 
         m_MeshGenerator.material = m_Water.waterEdgeMaterial;
+        m_MeshGenerator.castShadows = false;
 
         m_IsInitialized = true;
         return true;

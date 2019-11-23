@@ -16,7 +16,7 @@ public class Water : MonoBehaviour
         public float influence;
     }
 
-    [SerializeField] private float m_ShoreThreshold = 50.0f;
+    [SerializeField] private float m_ShoreThreshold = 200.0f;
     [SerializeField] private int m_ChunkLength = 20;
     [SerializeField] private int m_Width = 10;
     [SerializeField] private int m_ChunkCount = 10;
@@ -90,21 +90,23 @@ public class Water : MonoBehaviour
     {
         float waveFactor = 0.0f;
         float noiseFactor = 0.0f;
+        float shoreFactor = Mathf.SmoothStep(0.15f, 1.0f, Mathf.Min(1.0f, x / m_ShoreThreshold));
+
         for (int i = 0; i < m_Waves.Count; ++i)
         {
             float elapsedTime = m_ElapsedTime * m_Waves[i].waveVelocity;
-            waveFactor += Mathf.Sin(elapsedTime + x * m_Waves[i].waveFrequency) * m_Waves[i].waveAmplitude * m_Waves[i].influence;
+            waveFactor += Mathf.Sin(elapsedTime + x * m_Waves[i].waveFrequency) * m_Waves[i].waveAmplitude * m_Waves[i].influence * shoreFactor;
             noiseFactor += Mathf.PerlinNoise((x + elapsedTime) * m_Waves[i].noiseFrequency, z * m_Waves[i].noiseFrequency) * m_Waves[i].noiseStrength * m_Waves[i].influence;
         }
 
-        return (waveFactor * Mathf.SmoothStep(0.05f, 1.0f, Mathf.Min(1.0f, x / m_ShoreThreshold))) + noiseFactor;
+        return waveFactor + noiseFactor;
     }
 
     public float GetFloorDepth(float x, float z)
     {
         return  (Mathf.PerlinNoise(x * 0.17f, z * 0.17f) * 5.0f) *
-            Mathf.SmoothStep(0.1f, 1.0f, Mathf.Min(1.0f, x / m_ShoreThreshold)) - 
-            Mathf.SmoothStep(1.0f, 10.0f, Mathf.Min(1.0f, x / m_ShoreThreshold));
+            Mathf.SmoothStep(0.2f, 1.0f, Mathf.Min(1.0f, (x * 2.0f) / m_ShoreThreshold)) - 
+            Mathf.SmoothStep(3.0f, 10.0f, Mathf.Min(1.0f, (x * 2.0f) / m_ShoreThreshold));
     }
 
     public bool IsUnderwater(Vector3 point)
