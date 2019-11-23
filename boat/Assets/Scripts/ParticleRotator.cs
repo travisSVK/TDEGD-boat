@@ -21,11 +21,11 @@ public class ParticleRotator : MonoBehaviour
                 float cos = Mathf.Cos(scaleFactor * ((m_Particles[i].startLifetime - m_Particles[i].remainingLifetime) - (m_Particles[i].startLifetime / 3.0f)));
                 float sin = Mathf.Sin(scaleFactor * ((m_Particles[i].startLifetime - m_Particles[i].remainingLifetime) - (m_Particles[i].startLifetime / 3.0f)));
                 //Debug.Log("cos: " + cos + " sin: " + sin);
-                m_Particles[i].velocity = new Vector3(-10.0f * cos, 10.0f * sin, 0.0f);
+                m_Particles[i].velocity = new Vector3(-9.0f * cos, 9.0f * sin, 0.0f);
             }
             else
             {
-                m_Particles[i].velocity = new Vector3(-10.0f, 0.0f, 0.0f);
+                m_Particles[i].velocity = new Vector3(-7.0f, 0.0f, 0.0f);
             }
         }
         m_ParticleSystem.SetParticles(m_Particles, count);
