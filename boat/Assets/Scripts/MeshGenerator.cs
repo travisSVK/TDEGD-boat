@@ -9,6 +9,7 @@ public class MeshGenerator : MonoBehaviour
     private MeshRenderer m_MeshRenderer = null;
     private Mesh m_Mesh = null;
     private List<Vector3> m_Vertices = new List<Vector3>();
+    private List<Vector2> m_UVs = new List<Vector2>();
     private List<int> m_Indices = new List<int>();
 
     public bool castShadows
@@ -47,6 +48,27 @@ public class MeshGenerator : MonoBehaviour
         m_Vertices.Add(p1);
         m_Vertices.Add(p2);
 
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+
+        m_Indices.Add(current + 0);
+        m_Indices.Add(current + 1);
+        m_Indices.Add(current + 2);
+    }
+
+    public void AddTriangle(Vector3 p0, Vector3 p1, Vector3 p2, Vector2 uv0, Vector3 uv1, Vector3 uv2)
+    {
+        int current = m_Vertices.Count;
+
+        m_Vertices.Add(p0);
+        m_Vertices.Add(p1);
+        m_Vertices.Add(p2);
+
+        m_UVs.Add(uv0);
+        m_UVs.Add(uv1);
+        m_UVs.Add(uv2);
+
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
         m_Indices.Add(current + 2);
@@ -64,6 +86,14 @@ public class MeshGenerator : MonoBehaviour
         m_Vertices.Add(p2);
         m_Vertices.Add(p3);
 
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+        m_UVs.Add(Vector2.zero);
+
         m_Indices.Add(current + 0);
         m_Indices.Add(current + 1);
         m_Indices.Add(current + 2);
@@ -76,6 +106,7 @@ public class MeshGenerator : MonoBehaviour
     public void Clear()
     {
         m_Vertices.Clear();
+        m_UVs.Clear();
         m_Indices.Clear();
     }
 
@@ -106,9 +137,10 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         m_Mesh.vertices = m_Vertices.ToArray();
+        m_Mesh.uv = m_UVs.ToArray();
         m_Mesh.triangles = m_Indices.ToArray();
         m_Mesh.RecalculateNormals();
         m_Mesh.RecalculateTangents();
