@@ -26,6 +26,13 @@ public class BoatPhysics : MonoBehaviour
         m_BuoyancyMesh = GetComponent(typeof(BuoyancyMesh)) as BuoyancyMesh;
     }
 
+    private void Update()
+    {
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.y = 0.0f;
+        transform.rotation = Quaternion.Euler(rotation);
+    }
+
     private void FixedUpdate()
     {
         float Cf = WaterMath.ResistanceCoefficient(m_WaterDensity, m_RigidBody.velocity.magnitude, m_BuoyancyMesh.GetLength());

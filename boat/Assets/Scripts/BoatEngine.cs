@@ -5,9 +5,10 @@ using UnityEngine;
 public class BoatEngine : MonoBehaviour
 {
     [SerializeField] private Transform m_ForcePoint = null;
-    [SerializeField] private Transform m_propeller = null;
+    [SerializeField] private Transform m_Propeller = null;
     [SerializeField] private AudioSource m_EngineSoundSource = null;
     [SerializeField] private float m_MaxPower = 10.0f;
+    [SerializeField] private float m_PropellerRps = 20.0f;
 
     private float m_Thrust = 0.0f;
     private Rigidbody m_Rigidbody = null;
@@ -39,6 +40,14 @@ public class BoatEngine : MonoBehaviour
         {
             Vector3 force = m_ForcePoint.right * m_MaxPower * m_Thrust;
             m_Rigidbody.AddForceAtPosition(force, m_ForcePoint.position);
+        }
+    }
+
+    private void Update()
+    {
+        if (m_Propeller)
+        {
+            m_Propeller.Rotate(new Vector3(360.0f * m_PropellerRps * Time.deltaTime * m_Thrust, 0.0f, 0.0f));
         }
     }
 }

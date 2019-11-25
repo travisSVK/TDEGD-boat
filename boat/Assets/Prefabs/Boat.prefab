@@ -43,13 +43,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f1262693e0e632f4286ecfca0a6cc6a1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.16
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 108
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -4892,7 +4892,7 @@ ParticleSystemRenderer:
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
-  m_VertexStreams: 0001030409
+  m_VertexStreams: 00010304
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -9663,7 +9663,7 @@ ParticleSystemRenderer:
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
-  m_VertexStreams: 0001030409
+  m_VertexStreams: 00010304
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -9856,6 +9856,7 @@ GameObject:
   - component: {fileID: 1267711911}
   - component: {fileID: 1871723528}
   - component: {fileID: 1871723536}
+  - component: {fileID: 1297740064}
   m_Layer: 0
   m_Name: Boat
   m_TagString: Untagged
@@ -10027,9 +10028,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ForcePoint: {fileID: 2974238580438841666}
-  m_propeller: {fileID: 109288801795224686}
+  m_Propeller: {fileID: 109288801795224686}
   m_EngineSoundSource: {fileID: 481589552}
   m_MaxPower: 15000
+  m_PropellerRps: 20
 --- !u!114 &1871723536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10044,6 +10046,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AccelerationAxisName: Horizontal
   m_ThrustZeroClampThreshold: 0.04
+--- !u!114 &1297740064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598500752898691972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74655fb367dce514295058233ebe179b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FoamMaterial: {fileID: 2100000, guid: b5baa8cbe04321548bcb3f212d342091, type: 2}
+  m_FoamSize: 0.25
+  distBetweenNewVertices: 0.5
 --- !u!1 &5056169628903979192
 GameObject:
   m_ObjectHideFlags: 0

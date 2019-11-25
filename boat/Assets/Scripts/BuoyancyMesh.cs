@@ -7,8 +7,9 @@ public class BuoyancyMesh : MonoBehaviour
     private Rigidbody m_RigidBody;
 
     private Vector3[] m_BoatVertices = null;
-    private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
     private List<Triangle> m_AbovewaterTriangles = new List<Triangle>();
+    private List<Triangle> m_UnderwaterTriangles = new List<Triangle>();
+    private List<Vector3> m_IntersectionVertices = new List<Vector3>();
     private Vector3[] m_BoatVerticesGlobal = null;
     private int[] m_BoatIndices = null;
     private float[] m_WaterDistances = null;
@@ -35,6 +36,14 @@ public class BuoyancyMesh : MonoBehaviour
         get
         {
             return m_AbovewaterTriangles;
+        }
+    }
+
+    public List<Vector3> intersectionVertices
+    {
+        get
+        {
+            return m_IntersectionVertices;
         }
     }
 
@@ -75,6 +84,7 @@ public class BuoyancyMesh : MonoBehaviour
     {
         m_AbovewaterTriangles.Clear();
         m_UnderwaterTriangles.Clear();
+        m_IntersectionVertices.Clear();
         PrepareForGeneration();
         List<VertexData> vertexData = new List<VertexData>();
         vertexData.Add(new VertexData());
@@ -179,6 +189,9 @@ public class BuoyancyMesh : MonoBehaviour
         m_UnderwaterTriangles.Add(new Triangle(M, I_M, I_L, m_RigidBody, m_Water));
         m_UnderwaterTriangles.Add(new Triangle(M, I_L, L, m_RigidBody, m_Water));
         m_AbovewaterTriangles.Add(new Triangle(I_M, H, I_L, m_RigidBody, m_Water));
+
+        m_IntersectionVertices.Add(I_M);
+        m_IntersectionVertices.Add(I_L);
     }
 
     /*
@@ -245,6 +258,9 @@ public class BuoyancyMesh : MonoBehaviour
         m_UnderwaterTriangles.Add(new Triangle(L, J_H, J_M, m_RigidBody, m_Water));
         m_AbovewaterTriangles.Add(new Triangle(J_H, H, J_M, m_RigidBody, m_Water));
         m_AbovewaterTriangles.Add(new Triangle(J_M, H, M, m_RigidBody, m_Water));
+
+        m_IntersectionVertices.Add(J_H);
+        m_IntersectionVertices.Add(J_M);
     }
 
     /*
