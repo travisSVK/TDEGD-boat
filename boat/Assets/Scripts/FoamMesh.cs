@@ -37,9 +37,9 @@ public class FoamMesh : MonoBehaviour
     {
         m_Mesh.Clear();
 
-        if (m_Bouyancymesh.intersectionVertices.Count >= 4)
+        if (m_Bouyancymesh && m_Bouyancymesh.intersectionVertices.Count >= 4)
         {
-            GenerateFoamSkirt(m_Mesh, "Foam skirt", m_Bouyancymesh.intersectionVertices);
+            GenerateFoamSkirt(m_Bouyancymesh.intersectionVertices);
         }
     }
 
@@ -77,12 +77,7 @@ public class FoamMesh : MonoBehaviour
             }
         }
 
-        //Add the last vertex
         finalVertices.Add(sortedVertices[sortedVertices.Count - 1]);
-
-        //Make sure all vertices are above the water so we can see the foam
-        float timeSinceStart = Time.time;
-
         for (int i = 0; i < finalVertices.Count; i++)
         {
             Vector3 v = finalVertices[i];
@@ -94,34 +89,22 @@ public class FoamMesh : MonoBehaviour
         return finalVertices;
     }
 
-    private void CreateFoamMesh(List<Vector3> finalVertices, Mesh mesh, string name)
+    private void CreateFoamMesh(List<Vector3> finalVertices)
     {
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();
 
-        //
-        //Init by calculating the left normal, the normal, and the average left normal because we can reuse them
-        //
         Vector3 TL = finalVertices[finalVertices.Count - 1];
         Vector3 TR = finalVertices[0];
-
-        //To get the other corners we need the average "outgoing" normal from both sides of a vertex
-        //This side
         Vector3 vecBetween = Vector3.Normalize(TR - TL);
         Vector3 normal = new Vector3(vecBetween.z, 0f, -vecBetween.x);
-
-        //Left side
         Vector3 vecBetweenLeft = Vector3.Normalize(TL - finalVertices[finalVertices.Count - 2]);
         Vector3 normalLeft = new Vector3(vecBetweenLeft.z, 0f, -vecBetweenLeft.x);
         Vector3 averageNormalLeft = Vector3.Normalize((normalLeft + normal) * 0.5f);
 
-        //Move the vertex along the average normal
         Vector3 BL = TL + averageNormalLeft * m_FoamSize;
-
-        //Move the outer part of the foam with the wave
         BL.y = m_Water.GetWaterHeight(BL.x, BL.z);
 
-        //From global coordinates to local coordinates
         Vector3 TL_local = transform.InverseTransformPoint(TL);
         Vector3 BL_local = transform.InverseTransformPoint(BL);
 
@@ -138,66 +121,39 @@ public class FoamMesh : MonoBehaviour
             }
 
             Vector3 vecBetweenRight = Vector3.Normalize(finalVertices[rightPos] - TR);
-
             Vector3 normalRight = new Vector3(vecBetweenRight.z, 0f, -vecBetweenRight.x);
-
             Vector3 averageNormalRight = Vector3.Normalize((normalRight + normal) * 0.5f);
-
-            //Move the vertex along the average normal
             Vector3 BR = TR + averageNormalRight * m_FoamSize;
 
-            //Move the outer part of the foam with the wave
             BR.y = m_Water.GetWaterHeight(BR.x, BR.z);
 
-            //From global coordinates to local coordinates
             Vector3 TR_local = transform.InverseTransformPoint(TR);
             Vector3 BR_local = transform.InverseTransformPoint(BR);
 
             vertices.Add(TR_local);
             vertices.Add(BR_local);
 
-            //
-            // Build the two triangles
-            //
-            //Added in the order TL - BL - TR - BR
-            //TL - BR - BL
             triangles.Add(vertices.Count - 4);
             triangles.Add(vertices.Count - 1);
             triangles.Add(vertices.Count - 3);
 
-            //TL - TR - BR
             triangles.Add(vertices.Count - 4);
             triangles.Add(vertices.Count - 2);
             triangles.Add(vertices.Count - 1);
 
-            //
-            // Update for the next iteration
-            //
-            //Update the normal  and the corners for the next iteration
             normal = normalRight;
             TR = finalVertices[rightPos];
         }
 
-        //Remove the old mesh
-        mesh.Clear();
-
-        //Give it a name
-        mesh.name = name;
-
-        //Add the new vertices and triangles
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
+        m_Mesh.vertices = vertices.ToArray();
+        m_Mesh.triangles = triangles.ToArray();
+        m_Mesh.RecalculateNormals();
+        m_Mesh.RecalculateBounds();
     }
 
-    //Clean vertices that are close together
     private List<Vector3> CleanVertices(List<Vector3> intersectionVertices)
     {
         List<Vector3> cleanedVertices = new List<Vector3>();
-
-        //Debug.Log("Before cleaning: " + intersectionVertices.Count);
-
         for (int i = 0; i < intersectionVertices.Count; i++)
         {
             bool hasFoundNearbyVertice = false;
@@ -217,52 +173,31 @@ public class FoamMesh : MonoBehaviour
                 cleanedVertices.Add(intersectionVertices[i]);
             }
         }
-
-        //Debug.Log("After cleaning: " + cleanedVertices.Count);
-
         return cleanedVertices;
     }
 
-    //Display in which order the vertices have been added to a list by
-    //drawing a line from their coordinates, and the height is based on thir position in the list
     private void DisplayVerticesOrderHeight(List<Vector3> verticesList, Color color)
     {
         float length = 0.1f;
         for (int i = 0; i < verticesList.Count; i++)
         {
             Debug.DrawRay(verticesList[i], Vector3.up * length, color);
-
-            //So we can see the sorting order
             length += 0.2f;
         }
     }
 
 
-    private void GenerateFoamSkirt(Mesh mesh, string name, List<Vector3> intersectionVertices)
+    private void GenerateFoamSkirt(List<Vector3> intersectionVertices)
     {
-        //Step 1. Clean the vertices that are close together
         List<Vector3> cleanedVertices = CleanVertices(intersectionVertices);
-
-        //Display in which order the vertices have been added to the list
-        //DisplayVerticesOrderHeight(cleanedVertices, Color.green);
 
         if (cleanedVertices.Count >= 4)
         {
-            //Step 2. Sort the vertices
             List<Vector3> sortedVertices = ConvexHullMath.SortVerticesConvexHull(cleanedVertices);
-            //DisplayVerticesOrder(sortedVertices, Color.blue);
-
-            //DisplayVerticesOrderHeight(sortedVertices, Color.green);
-            //Step 3. Add more vertices by splitting sections that are too far away to get a smoother foam
             List<Vector3> finalVertices = AddVertices(sortedVertices);
-
-            //DisplayVerticesOrder(sortedVertices, Color.blue);
-
             DisplayVerticesOrderHeight(finalVertices, Color.green);
 
-
-            //Step 4. Create the foam mesh
-            CreateFoamMesh(finalVertices, mesh, name);
+            CreateFoamMesh(finalVertices);
         }
     }
 }

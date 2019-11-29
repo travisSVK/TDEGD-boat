@@ -78,7 +78,6 @@ public class ConvexHullMath
             //Is this a clockwise or a counter-clockwise triangle
             Vector3 a = sortedList[sortedList.Count - 2];
             Vector3 b = sortedList[sortedList.Count - 1];
-
             Vector3 c = unSortedList[unSortedList.Count - 1];
 
             unSortedList.RemoveAt(unSortedList.Count - 1);
@@ -86,7 +85,7 @@ public class ConvexHullMath
             sortedList.Add(c);
 
             //Need to back track in case we messed up at an earlier point
-            while (isClockWise(a, b, c) && safety < 1000)
+            while (IsClockWise(a, b, c) && safety < 1000)
             {
                 //Remove the next to last one because we know it aint on the hull
                 sortedList.RemoveAt(sortedList.Count - 2);
@@ -104,7 +103,7 @@ public class ConvexHullMath
 
     //Is a triangle in 2d space clockwise or counter-clockwise
     //https://www.youtube.com/watch?v=0HZaRu5IupM
-    private static bool isClockWise(Vector3 a, Vector3 b, Vector3 c)
+    private static bool IsClockWise(Vector3 a, Vector3 b, Vector3 c)
     {
         float signedArea = (b.x - a.x) * (c.z - a.z) - (b.z - a.z) * (c.x - a.x);
 
