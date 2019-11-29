@@ -2438,18 +2438,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2103798825, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_BuoyancyCoeficient
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2103798825, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_AirDragCoeficient
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2103798825, guid: 09f85bf460314a64a8798590af2b55c3, type: 3}
-      propertyPath: m_DistanceToSurfaceThreshold
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 552579937741463959, guid: 09f85bf460314a64a8798590af2b55c3,
         type: 3}
       propertyPath: m_LocalPosition.x
