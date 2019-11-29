@@ -3,14 +3,14 @@ Developed as a course Technology-Driven Experimental Game Design at University o
 
 Sounds used:
 
-Song title: Zen Stones
-Link to resource: http://www.orangefreesounds.com/zen-stones-relaxing-meditation-music/
-Author: Alexander Blu
+Song title: Zen Stones <br />
+Link to resource: http://www.orangefreesounds.com/zen-stones-relaxing-meditation-music /<br />
+Author: Alexander Blu <br />
 
-Sound title: Wind Sound
-Link to resource: http://soundbible.com/1810-Wind.html
-Author: Mark DiAngelo
+Sound title: Wind Sound <br />
+Link to resource: http://soundbible.com/1810-Wind.html <br />
+Author: Mark DiAngelo <br />
 
-Sound title: Ocean Waves Sound
-Link to resource: http://soundbible.com/1935-Ocean-Waves.html
-Author: Mike Koenig
+Sound title: Ocean Waves Sound <br />
+Link to resource: http://soundbible.com/1935-Ocean-Waves.html <br />
+Author: Mike Koenig <br />
